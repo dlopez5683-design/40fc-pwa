@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* =====================================================
+   40 FC - Identidad visual global
+   ===================================================== */
+
+:root {
+  --color-40fc-red: #e5232d;
+  --color-40fc-blue: #74c7ee;
+  --color-40fc-dark: #111318;
+  --color-40fc-navy: #071c31;
+  --color-40fc-white: #ffffff;
+  --color-40fc-gray: #f4f5f7;
+  --color-40fc-text: #20242a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-40fc-gray);
+  color: var(--color-40fc-text);
+}
