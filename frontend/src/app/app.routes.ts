@@ -7,6 +7,8 @@ import { Fondo } from './pages/jugador/fondo/fondo';
 import { Partidos } from './pages/jugador/partidos/partidos';
 import { Actividades } from './pages/jugador/actividades/actividades';
 import { Perfil } from './pages/jugador/perfil/perfil';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { AdminDashboard } from './pages/administrador/admin-dashboard/admin-dashboard';
 
 export const routes: Routes = [
   {
@@ -41,7 +43,16 @@ export const routes: Routes = [
     ]
   },
 
-  
+ {
+  path: 'admin',
+  component: AdminLayout,
+  children: [
+    {
+      path: '',
+      component: AdminDashboard
+    }
+  ]
+}, 
 
   {
     path: '',

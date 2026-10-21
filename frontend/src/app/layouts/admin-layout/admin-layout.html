@@ -1,0 +1,193 @@
+<div class="admin-shell">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+
+      <img
+        src="assets/branding/logo-40fc.png"
+        alt="Escudo 40 FC"
+      >
+
+      <div>
+        <strong>40 FC</strong>
+        <span>Administración</span>
+      </div>
+
+    </div>
+
+
+    <div class="role-badge">
+      ADMINISTRADOR DEL CLUB
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+      <a
+        routerLink="/admin"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item"
+      >
+        <span class="nav-icon">⌂</span>
+        <span>Inicio</span>
+      </a>
+
+
+      <a
+        href="#"
+        class="nav-item"
+      >
+        <span class="nav-icon">○</span>
+        <span>Jugadores</span>
+      </a>
+
+
+      <a
+        href="#"
+        class="nav-item"
+      >
+        <span class="nav-icon">⚽</span>
+        <span>Partidos</span>
+      </a>
+
+
+      <a
+        href="#"
+        class="nav-item"
+      >
+        <span class="nav-icon">$</span>
+        <span>Tesorería</span>
+      </a>
+
+
+      <a
+        href="#"
+        class="nav-item"
+      >
+        <span class="nav-icon">◇</span>
+        <span>Actividades</span>
+      </a>
+
+
+      <a
+        href="#"
+        class="nav-item"
+      >
+        <span class="nav-icon">▤</span>
+        <span>Reportes</span>
+      </a>
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+      <a
+        routerLink="/login"
+        class="logout"
+      >
+        Cerrar sesión
+      </a>
+
+    </div>
+
+  </aside>
+
+
+  <!-- CONTENIDO -->
+
+  <section class="main-area">
+
+    <header class="topbar">
+
+      <div class="topbar-brand">
+
+        <img
+          src="assets/branding/logo-40fc.png"
+          alt="40 FC"
+          class="topbar-logo"
+        >
+
+        <div>
+
+          <span class="topbar-label">
+            PANEL ADMINISTRATIVO
+          </span>
+
+          <h1>40 FC</h1>
+
+        </div>
+
+      </div>
+
+
+      <div class="user-info">
+
+        <div class="user-text">
+          <strong>Administrador</strong>
+          <span>Administración del club</span>
+        </div>
+
+        <div class="avatar">
+          AD
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <main class="content">
+
+      <router-outlet></router-outlet>
+
+    </main>
+
+  </section>
+
+
+  <!-- NAVEGACIÓN MÓVIL -->
+
+  <nav class="mobile-nav">
+
+    <a
+      routerLink="/admin"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="mobile-nav-item"
+    >
+      <span>⌂</span>
+      <small>Inicio</small>
+    </a>
+
+
+    <a href="#" class="mobile-nav-item">
+      <span>○</span>
+      <small>Jugadores</small>
+    </a>
+
+
+    <a href="#" class="mobile-nav-item">
+      <span>⚽</span>
+      <small>Partidos</small>
+    </a>
+
+
+    <a href="#" class="mobile-nav-item">
+      <span>$</span>
+      <small>Tesorería</small>
+    </a>
+
+
+    <a href="#" class="mobile-nav-item">
+      <span>◇</span>
+      <small>Actividades</small>
+    </a>
+
+  </nav>
+
+</div>
