@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
-  imports: [],
   selector: 'app-login',
-  styleUrl: './login.scss',
+  imports: [],
   templateUrl: './login.html',
+  styleUrl: './login.scss'
 })
-export class Login {}
+export class Login {
+
+  private readonly router = inject(Router);
+
+  entrarComoJugador(event: Event): void {
+    event.preventDefault();
+
+    this.router.navigate(['/jugador']);
+  }
+
+}
