@@ -1,0 +1,252 @@
+<section class="partidos-page">
+
+  <header class="page-header">
+
+    <div>
+      <span class="eyebrow">
+        CONVOCATORIAS
+      </span>
+
+      <h2>Mis partidos</h2>
+
+      <p>
+        Consulta las próximas fechas y confirma tu participación.
+      </p>
+    </div>
+
+  </header>
+
+
+  <!-- PRÓXIMO PARTIDO -->
+
+  <article class="next-match">
+
+    <div class="match-top">
+
+      <div>
+
+        <span class="eyebrow">
+          PRÓXIMO PARTIDO
+        </span>
+
+        <h3>
+          Convocatoria 40 FC
+        </h3>
+
+      </div>
+
+      <span
+        class="status"
+        [class.confirmed]="respuesta === 'confirmado'"
+        [class.declined]="respuesta === 'no_asiste'"
+      >
+        {{
+          respuesta === 'confirmado'
+            ? 'Confirmado'
+            : respuesta === 'no_asiste'
+              ? 'No asistiré'
+              : 'Pendiente'
+        }}
+      </span>
+
+    </div>
+
+
+    <div class="match-main">
+
+      <div class="club">
+
+        <img
+          src="assets/branding/logo-40fc.png"
+          alt="40 FC"
+        >
+
+        <strong>40 FC</strong>
+
+      </div>
+
+
+      <div class="match-date">
+
+        <span>
+          SÁBADO
+        </span>
+
+        <strong>
+          29 AGO
+        </strong>
+
+        <small>
+          20:00
+        </small>
+
+      </div>
+
+
+      <div class="location">
+
+        <span>
+          Cancha
+        </span>
+
+        <strong>
+          Asociación de Empleados UTM
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="match-detail">
+
+      <div>
+        <span>Valor por jugador</span>
+        <strong>$2,25</strong>
+      </div>
+
+      <div>
+        <span>Costo de cancha</span>
+        <strong>$28,00</strong>
+      </div>
+
+      <div>
+        <span>Confirmados</span>
+        <strong>21</strong>
+      </div>
+
+    </div>
+
+
+    <div class="confirmation-box">
+
+      <div>
+
+        <strong>
+          ¿Vas a jugar?
+        </strong>
+
+        <span>
+          Puedes modificar tu respuesta mientras la convocatoria esté abierta.
+        </span>
+
+      </div>
+
+
+      <div class="confirmation-buttons">
+
+        <button
+          type="button"
+          class="yes-button"
+          [class.selected]="respuesta === 'confirmado'"
+          (click)="confirmar()"
+        >
+          Sí, confirmo
+        </button>
+
+        <button
+          type="button"
+          class="no-button"
+          [class.selected]="respuesta === 'no_asiste'"
+          (click)="noAsistir()"
+        >
+          No asistiré
+        </button>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- HISTORIAL -->
+
+  <article class="history-card">
+
+    <div class="history-title">
+
+      <div>
+        <span class="eyebrow">
+          HISTORIAL
+        </span>
+
+        <h3>
+          Partidos anteriores
+        </h3>
+      </div>
+
+    </div>
+
+
+    <div class="match-row">
+
+      <div class="date-box">
+        <strong>20</strong>
+        <span>AGO</span>
+      </div>
+
+      <div class="past-info">
+        <strong>Asociación de Empleados UTM</strong>
+        <span>Asististe al partido</span>
+      </div>
+
+      <div class="past-status attended">
+        Asistió
+      </div>
+
+      <strong class="fund-value">
+        +$1,25
+      </strong>
+
+    </div>
+
+
+    <div class="match-row">
+
+      <div class="date-box">
+        <strong>13</strong>
+        <span>AGO</span>
+      </div>
+
+      <div class="past-info">
+        <strong>Asociación de Empleados UTM</strong>
+        <span>Asististe al partido</span>
+      </div>
+
+      <div class="past-status attended">
+        Asistió
+      </div>
+
+      <strong class="fund-value">
+        +$0,92
+      </strong>
+
+    </div>
+
+
+    <div class="match-row">
+
+      <div class="date-box">
+        <strong>06</strong>
+        <span>AGO</span>
+      </div>
+
+      <div class="past-info">
+        <strong>Complejo Deportivo</strong>
+        <span>No asististe al partido</span>
+      </div>
+
+      <div class="past-status absent">
+        No asistió
+      </div>
+
+      <strong class="debt-value">
+        -$0,50
+      </strong>
+
+    </div>
+
+  </article>
+
+</section>

@@ -1,0 +1,246 @@
+.fondo-page {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  color: #e5232d;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.page-header h2 {
+  margin: 7px 0 5px;
+  color: #111318;
+  font-size: 2rem;
+}
+
+.page-header p {
+  margin: 0;
+  color: #7b838d;
+  font-size: 0.9rem;
+}
+
+
+/* =========================
+   BALANCE
+   ========================= */
+
+.balance-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.balance-card {
+  padding: 24px;
+  border: 1px solid #e8ebee;
+  border-radius: 18px;
+  background: white;
+}
+
+.main-balance {
+  border: 0;
+  background:
+    linear-gradient(
+      135deg,
+      #111318,
+      #071c31
+    );
+}
+
+.balance-card span {
+  color: #7b838d;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.main-balance span {
+  color: rgba(255,255,255,0.55);
+}
+
+.balance-card strong {
+  display: block;
+  margin-top: 10px;
+  color: #171b20;
+  font-size: 2rem;
+}
+
+.main-balance strong {
+  color: white;
+}
+
+.balance-card small {
+  display: block;
+  margin-top: 8px;
+  color: #979ea6;
+  font-size: 0.68rem;
+}
+
+.main-balance small {
+  color: rgba(255,255,255,0.45);
+}
+
+.debt {
+  color: #d54242 !important;
+}
+
+.net-balance {
+  color: #258a60 !important;
+}
+
+
+/* =========================
+   RESUMEN
+   ========================= */
+
+.movement-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.movement-summary article {
+  padding: 18px;
+  border: 1px solid #e9ebee;
+  border-radius: 14px;
+  background: white;
+}
+
+.movement-summary span {
+  display: block;
+  color: #89919a;
+  font-size: 0.68rem;
+}
+
+.movement-summary strong {
+  display: block;
+  margin-top: 8px;
+  color: #22272d;
+  font-size: 1.15rem;
+}
+
+
+/* =========================
+   HISTORIAL
+   ========================= */
+
+.history-card {
+  padding: 26px;
+  border: 1px solid #e7e9ec;
+  border-radius: 20px;
+  background: white;
+}
+
+.history-header h3 {
+  margin: 6px 0 22px;
+  color: #181c21;
+}
+
+.history-table {
+  width: 100%;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 0.7fr;
+  gap: 12px;
+  align-items: center;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #eef0f2;
+
+  font-size: 0.78rem;
+}
+
+.history-row:last-child {
+  border-bottom: 0;
+}
+
+.history-head {
+  color: #89919a;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status {
+  width: fit-content;
+
+  padding: 5px 9px;
+
+  border-radius: 20px;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+.positive-status {
+  background: #eaf8f1;
+  color: #258a60;
+}
+
+.debt-status {
+  background: #fff0f0;
+  color: #c83b3b;
+}
+
+.paid-status {
+  background: #edf6fb;
+  color: #3a7da2;
+}
+
+.positive {
+  color: #258a60;
+}
+
+.negative {
+  color: #d54242;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 900px) {
+
+  .balance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movement-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .history-card {
+    padding: 18px 14px;
+  }
+
+  .history-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 14px;
+  }
+
+  .history-head {
+    display: none;
+  }
+
+  .history-row > :nth-child(3),
+  .history-row > :nth-child(4) {
+    margin-top: 4px;
+  }
+
+}

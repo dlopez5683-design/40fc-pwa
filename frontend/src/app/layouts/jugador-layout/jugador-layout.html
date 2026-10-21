@@ -21,28 +21,34 @@
     <nav class="sidebar-nav">
 
       <a
-        routerLink="/jugador"
-        class="nav-item active"
-      >
-        <span class="nav-icon">⌂</span>
-        <span>Inicio</span>
-      </a>
+  routerLink="/jugador"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }"
+  class="nav-item"
+>
+  <span class="nav-icon">⌂</span>
+  <span>Inicio</span>
+</a>
+
+<a
+  routerLink="/jugador/fondo"
+  routerLinkActive="active"
+  class="nav-item"
+>
+  <span class="nav-icon">$</span>
+  <span>Mi fondo</span>
+</a>
+
+      
 
       <a
-        href="#"
-        class="nav-item"
-      >
-        <span class="nav-icon">$</span>
-        <span>Mi fondo</span>
-      </a>
-
-      <a
-        href="#"
-        class="nav-item"
-      >
-        <span class="nav-icon">⚽</span>
-        <span>Partidos</span>
-      </a>
+  routerLink="/jugador/partidos"
+  routerLinkActive="active"
+  class="nav-item"
+>
+  <span class="nav-icon">⚽</span>
+  <span>Partidos</span>
+</a>
 
       <a
         href="#"
@@ -130,28 +136,32 @@
   <nav class="mobile-nav">
 
   <a
-    routerLink="/jugador"
-    class="mobile-nav-item active"
-  >
-    <span class="mobile-nav-icon">⌂</span>
-    <span>Inicio</span>
-  </a>
+  routerLink="/jugador"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="{ exact: true }"
+  class="mobile-nav-item"
+>
+  <span class="mobile-nav-icon">⌂</span>
+  <span>Inicio</span>
+</a>
+
+<a
+  routerLink="/jugador/fondo"
+  routerLinkActive="active"
+  class="mobile-nav-item"
+>
+  <span class="mobile-nav-icon">$</span>
+  <span>Fondo</span>
+</a>
 
   <a
-    href="#"
-    class="mobile-nav-item"
-  >
-    <span class="mobile-nav-icon">$</span>
-    <span>Fondo</span>
-  </a>
-
-  <a
-    href="#"
-    class="mobile-nav-item"
-  >
-    <span class="mobile-nav-icon">⚽</span>
-    <span>Partidos</span>
-  </a>
+  routerLink="/jugador/partidos"
+  routerLinkActive="active"
+  class="mobile-nav-item"
+>
+  <span class="mobile-nav-icon">⚽</span>
+  <span>Partidos</span>
+</a>
 
   <a
     href="#"
