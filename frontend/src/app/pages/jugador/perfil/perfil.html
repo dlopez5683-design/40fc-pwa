@@ -1,0 +1,301 @@
+<section class="profile-page">
+
+  <header class="page-header">
+
+    <div>
+      <span class="eyebrow">
+        MI CUENTA
+      </span>
+
+      <h2>
+        Mi perfil
+      </h2>
+
+      <p>
+        Consulta tus datos registrados como miembro de 40 FC.
+      </p>
+    </div>
+
+  </header>
+
+
+  <!-- PERFIL PRINCIPAL -->
+
+  <article class="profile-card">
+
+    <div class="profile-identity">
+
+      <div class="avatar-large">
+        CP
+      </div>
+
+      <div>
+
+        <span class="member-label">
+          MIEMBRO 40 FC
+        </span>
+
+        <h3>
+          Carlos Pérez
+        </h3>
+
+        <p>
+          Jugador activo
+        </p>
+
+      </div>
+
+      <span class="status active">
+        Activo
+      </span>
+
+    </div>
+
+
+    <div class="profile-data">
+
+      <div class="data-item">
+
+        <span>
+          Nombre completo
+        </span>
+
+        <strong>
+          Carlos Pérez
+        </strong>
+
+      </div>
+
+
+      <div class="data-item">
+
+        <span>
+          Correo electrónico
+        </span>
+
+        <strong>
+          carlos.perez@40fc.com
+        </strong>
+
+      </div>
+
+
+      <div class="data-item">
+
+        <span>
+          Teléfono
+        </span>
+
+        <strong>
+          099 999 9999
+        </strong>
+
+      </div>
+
+
+      <div class="data-item">
+
+        <span>
+          Rol
+        </span>
+
+        <strong>
+          Jugador
+        </strong>
+
+      </div>
+
+
+      <div class="data-item">
+
+        <span>
+          Fecha de ingreso
+        </span>
+
+        <strong>
+          15/01/2024
+        </strong>
+
+      </div>
+
+
+      <div class="data-item">
+
+        <span>
+          Estado
+        </span>
+
+        <strong class="active-text">
+          Miembro activo
+        </strong>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- INFORMACIÓN FINANCIERA -->
+
+  <article class="account-card">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          RESUMEN
+        </span>
+
+        <h3>
+          Estado de mi cuenta
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <div class="account-grid">
+
+      <div>
+
+        <span>
+          Fondo acumulado
+        </span>
+
+        <strong class="positive">
+          $18,75
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Deuda pendiente
+        </span>
+
+        <strong class="negative">
+          $1,25
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Actividades pendientes
+        </span>
+
+        <strong>
+          $25,00
+        </strong>
+
+      </div>
+
+    </div>
+
+  </article>
+
+
+  <!-- SEGURIDAD -->
+
+  <article class="security-card">
+
+    <div class="security-info">
+
+      <div>
+
+        <span class="eyebrow">
+          SEGURIDAD
+        </span>
+
+        <h3>
+          Contraseña
+        </h3>
+
+        <p>
+          Cambia tu contraseña de acceso a 40 FC.
+        </p>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="alternarCambioPassword()"
+      >
+        Cambiar contraseña
+      </button>
+
+    </div>
+
+
+    @if (mostrarCambioPassword) {
+
+      <div class="password-form">
+
+        <div class="form-group">
+
+          <label for="currentPassword">
+            Contraseña actual
+          </label>
+
+          <input
+            id="currentPassword"
+            type="password"
+            placeholder="Contraseña actual"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="newPassword">
+            Nueva contraseña
+          </label>
+
+          <input
+            id="newPassword"
+            type="password"
+            placeholder="Nueva contraseña"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="confirmPassword">
+            Confirmar contraseña
+          </label>
+
+          <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Repite la nueva contraseña"
+          >
+
+        </div>
+
+
+        <button
+          type="button"
+          class="primary-button"
+        >
+          ACTUALIZAR CONTRASEÑA
+        </button>
+
+      </div>
+
+    }
+
+  </article>
+
+</section>

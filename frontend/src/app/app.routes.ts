@@ -6,6 +6,7 @@ import { Dashboard } from './pages/jugador/dashboard/dashboard';
 import { Fondo } from './pages/jugador/fondo/fondo';
 import { Partidos } from './pages/jugador/partidos/partidos';
 import { Actividades } from './pages/jugador/actividades/actividades';
+import { Perfil } from './pages/jugador/perfil/perfil';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,10 @@ export const routes: Routes = [
 {
   path: 'actividades',
   component: Actividades
+},
+{
+  path: 'perfil',
+  component: Perfil
 }
     ]
   },
