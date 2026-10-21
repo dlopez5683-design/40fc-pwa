@@ -9,6 +9,7 @@ import { Actividades } from './pages/jugador/actividades/actividades';
 import { Perfil } from './pages/jugador/perfil/perfil';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { AdminDashboard } from './pages/administrador/admin-dashboard/admin-dashboard';
+import { Jugadores } from './pages/administrador/jugadores/jugadores';
 
 export const routes: Routes = [
   {
@@ -50,7 +51,11 @@ export const routes: Routes = [
     {
       path: '',
       component: AdminDashboard
-    }
+    },
+    {
+  path: 'jugadores',
+  component: Jugadores
+}
   ]
 }, 
 

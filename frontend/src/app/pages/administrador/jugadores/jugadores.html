@@ -1,0 +1,345 @@
+<section class="players-page">
+
+  <header class="page-header">
+
+    <div>
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Jugadores
+      </h2>
+
+      <p>
+        Administra los miembros registrados en 40 FC.
+      </p>
+    </div>
+
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="abrirNuevoJugador()"
+    >
+      + NUEVO JUGADOR
+    </button>
+
+  </header>
+
+
+  <!-- RESUMEN -->
+
+  <section class="stats-grid">
+
+    <article>
+
+      <span>
+        Total registrados
+      </span>
+
+      <strong>
+        {{ jugadores.length }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        Miembros activos
+      </span>
+
+      <strong class="positive">
+        {{ totalActivos }}
+      </strong>
+
+    </article>
+
+
+    <article>
+
+      <span>
+        Miembros inactivos
+      </span>
+
+      <strong>
+        {{ totalInactivos }}
+      </strong>
+
+    </article>
+
+  </section>
+
+
+  <!-- BUSCADOR -->
+
+  <section class="toolbar">
+
+    <div class="search-box">
+
+      <span>⌕</span>
+
+      <input
+        type="search"
+        placeholder="Buscar por nombre o correo..."
+        [(ngModel)]="busqueda"
+      >
+
+    </div>
+
+  </section>
+
+
+  <!-- TABLA -->
+
+  <article class="table-card">
+
+    <div class="table-header">
+
+      <span>Jugador</span>
+      <span>Contacto</span>
+      <span>Nacimiento</span>
+      <span>Ingreso</span>
+      <span>Estado</span>
+      <span>Acciones</span>
+
+    </div>
+
+
+    @for (jugador of jugadoresFiltrados; track jugador.id) {
+
+      <div class="player-row">
+
+        <div class="player">
+
+          <div class="player-avatar">
+            {{ jugador.nombre.charAt(0) }}
+          </div>
+
+          <div>
+            <strong>
+              {{ jugador.nombre }}
+            </strong>
+
+            <span>
+              Miembro 40 FC
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="contact">
+
+          <strong>
+            {{ jugador.correo }}
+          </strong>
+
+          <span>
+            {{ jugador.telefono }}
+          </span>
+
+        </div>
+        
+        <div class="date">
+          {{ jugador.fechaNacimiento }}
+        </div>
+
+        <div class="date">
+          {{ jugador.fechaIngreso }}
+        </div>
+
+
+        <div>
+
+          <span
+            class="status"
+            [class.inactive]="jugador.estado === 'Inactivo'"
+          >
+            {{ jugador.estado }}
+          </span>
+
+        </div>
+
+
+        <div class="actions">
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="editarJugador(jugador)"
+          >
+            Editar
+          </button>
+
+
+          <button
+            type="button"
+            class="status-button"
+            (click)="cambiarEstado(jugador)"
+          >
+            {{
+              jugador.estado === 'Activo'
+                ? 'Desactivar'
+                : 'Activar'
+            }}
+          </button>
+
+        </div>
+
+      </div>
+
+    }
+
+  </article>
+
+
+  <!-- FORMULARIO -->
+
+  @if (mostrarFormulario) {
+
+    <div class="modal-overlay">
+
+      <section class="modal">
+
+        <header class="modal-header">
+
+          <div>
+
+            <span class="eyebrow">
+              JUGADORES
+            </span>
+
+            <h3>
+              {{
+                editandoId !== null
+                  ? 'Editar jugador'
+                  : 'Nuevo jugador'
+              }}
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="cancelarFormulario()"
+          >
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label>
+              Nombre completo *
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="formulario.nombre"
+              placeholder="Nombre y apellido"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Correo electrónico *
+            </label>
+
+            <input
+              type="email"
+              [(ngModel)]="formulario.correo"
+              placeholder="jugador@40fc.com"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+  <label>
+    Teléfono
+  </label>
+
+  <input
+    type="tel"
+    [(ngModel)]="formulario.telefono"
+    placeholder="0999999999"
+  >
+
+</div>
+
+
+<div class="form-group">
+
+  <label>
+    Fecha de nacimiento
+  </label>
+
+  <input
+    type="date"
+    [(ngModel)]="formulario.fechaNacimiento"
+  >
+
+</div>
+
+
+<div class="form-group full">
+
+  <label>
+    Fecha de ingreso al club
+  </label>
+
+  <input
+    type="date"
+    [(ngModel)]="formulario.fechaIngreso"
+  >
+
+</div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelarFormulario()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="guardarJugador()"
+          >
+            {{
+              editandoId !== null
+                ? 'GUARDAR CAMBIOS'
+                : 'CREAR JUGADOR'
+            }}
+          </button>
+
+        </footer>
+
+      </section>
+
+    </div>
+
+  }
+
+</section>
