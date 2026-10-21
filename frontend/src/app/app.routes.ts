@@ -5,6 +5,7 @@ import { JugadorLayout } from './layouts/jugador-layout/jugador-layout';
 import { Dashboard } from './pages/jugador/dashboard/dashboard';
 import { Fondo } from './pages/jugador/fondo/fondo';
 import { Partidos } from './pages/jugador/partidos/partidos';
+import { Actividades } from './pages/jugador/actividades/actividades';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,10 @@ export const routes: Routes = [
 {
   path: 'partidos',
   component: Partidos
+},
+{
+  path: 'actividades',
+  component: Actividades
 }
     ]
   },
