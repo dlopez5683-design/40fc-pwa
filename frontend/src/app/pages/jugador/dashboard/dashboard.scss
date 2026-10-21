@@ -1,0 +1,365 @@
+.dashboard {
+  max-width: 1250px;
+
+  margin: 0 auto;
+}
+
+.eyebrow {
+  color: #e5232d;
+
+  font-size: 0.66rem;
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+}
+
+
+/* BIENVENIDA */
+
+.welcome {
+  margin-bottom: 28px;
+}
+
+.welcome h2 {
+  margin: 7px 0 5px;
+
+  color: #111318;
+
+  font-size: 2rem;
+}
+
+.welcome p {
+  margin: 0;
+
+  color: #7b838d;
+
+  font-size: 0.9rem;
+}
+
+
+/* RESUMEN */
+
+.summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 18px;
+
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  padding: 22px;
+
+  border-radius: 18px;
+
+  background: white;
+
+  border: 1px solid #e9ebee;
+}
+
+.main-card {
+  background:
+    linear-gradient(
+      135deg,
+      #111318,
+      #071c31
+    );
+
+  border: 0;
+}
+
+.card-label {
+  color: #7c848d;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.main-card .card-label {
+  color: rgba(255,255,255,0.55);
+}
+
+.card-value {
+  margin-top: 10px;
+
+  color: #171b20;
+
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.main-card .card-value {
+  color: white;
+}
+
+.card-footer {
+  margin-top: 13px;
+
+  color: #989fa7;
+
+  font-size: 0.7rem;
+}
+
+.positive {
+  color: #258a60;
+}
+
+.warning {
+  color: #d87a1f;
+}
+
+
+/* PARTIDO */
+
+.match-card,
+.movements-card {
+  margin-top: 20px;
+
+  padding: 26px;
+
+  border-radius: 20px;
+
+  border: 1px solid #e7e9ec;
+
+  background: white;
+}
+
+.match-header,
+.section-title {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.match-header h3,
+.section-title h3 {
+  margin: 6px 0 0;
+
+  color: #181c21;
+}
+
+.match-status {
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  background: #fff4e8;
+
+  color: #bf671a;
+
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.match-info {
+  margin: 25px 0;
+
+  padding: 20px 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  border-top: 1px solid #eef0f2;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.match-info div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.match-info span {
+  color: #939ba4;
+
+  font-size: 0.68rem;
+}
+
+.match-info strong {
+  color: #262b31;
+
+  font-size: 0.84rem;
+}
+
+
+/* CONFIRMACIÓN */
+
+.confirmation {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.confirmation > div:first-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.confirmation strong {
+  color: #20242a;
+}
+
+.confirmation span {
+  color: #8b929b;
+
+  font-size: 0.75rem;
+}
+
+.confirmation-actions {
+  display: flex;
+
+  gap: 10px;
+}
+
+.confirmation-actions button {
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  font-size: 0.76rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.confirm-button {
+  border: 0;
+
+  background: #e5232d;
+
+  color: white;
+}
+
+.decline-button {
+  border: 1px solid #dfe2e5;
+
+  background: white;
+
+  color: #5c636c;
+}
+
+
+/* MOVIMIENTOS */
+
+.section-title button {
+  border: 0;
+
+  background: transparent;
+
+  color: #e5232d;
+
+  font-size: 0.75rem;
+
+  cursor: pointer;
+}
+
+.movement {
+  padding: 17px 0;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid #eff1f3;
+}
+
+.movement:last-child {
+  border-bottom: 0;
+}
+
+.movement div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.movement strong {
+  color: #30353b;
+
+  font-size: 0.8rem;
+}
+
+.movement div span {
+  color: #979ea6;
+
+  font-size: 0.7rem;
+}
+
+.amount {
+  font-weight: 800;
+
+  font-size: 0.82rem;
+}
+
+.negative {
+  color: #d54242;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+  }
+
+  .summary-card {
+    padding: 17px;
+  }
+
+  .card-value {
+    font-size: 1.35rem;
+  }
+
+  .match-card,
+  .movements-card {
+    padding: 20px 17px;
+  }
+
+  .match-info {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .confirmation {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .confirmation-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
