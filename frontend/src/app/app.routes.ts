@@ -10,6 +10,7 @@ import { Perfil } from './pages/jugador/perfil/perfil';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { AdminDashboard } from './pages/administrador/admin-dashboard/admin-dashboard';
 import { Jugadores } from './pages/administrador/jugadores/jugadores';
+import { Partidos as PartidosAdmin } from './pages/administrador/partidos/partidos';
 
 export const routes: Routes = [
   {
@@ -55,6 +56,10 @@ export const routes: Routes = [
     {
   path: 'jugadores',
   component: Jugadores
+},
+{
+  path: 'partidos',
+  component: PartidosAdmin
 }
   ]
 }, 

@@ -1,0 +1,774 @@
+<section class="matches-page">
+
+  <!-- CABECERA -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Partidos
+      </h2>
+
+      <p>
+        Gestiona convocatorias, asistencia y costos de cada fecha.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="abrirNuevoPartido()"
+    >
+      + NUEVO PARTIDO
+    </button>
+
+  </header>
+
+
+  <!-- PARTIDO ACTUAL -->
+
+  <article class="match-card">
+
+    <header class="match-header">
+
+      <div>
+
+        <span class="eyebrow">
+          CONVOCATORIA ACTUAL
+        </span>
+
+        <h3>
+          {{ partidoActual.cancha }}
+        </h3>
+
+      </div>
+
+
+      <span
+        class="match-status"
+        [class.closed]="partidoActual.estado === 'Cerrada'"
+      >
+        {{ partidoActual.estado }}
+      </span>
+
+    </header>
+
+
+    <!-- DATOS PARTIDO -->
+
+    <div class="match-data">
+
+      <div>
+        <span>Fecha</span>
+        <strong>
+          {{ partidoActual.fecha }}
+        </strong>
+      </div>
+
+
+      <div>
+        <span>Hora</span>
+        <strong>
+          {{ partidoActual.hora }}
+        </strong>
+      </div>
+
+
+      <div>
+        <span>Costo cancha</span>
+        <strong>
+          ${{ partidoActual.costoCancha.toFixed(2) }}
+        </strong>
+      </div>
+
+
+      <div>
+        <span>Cuota por jugador</span>
+        <strong>
+          ${{ partidoActual.cuotaJugador.toFixed(2) }}
+        </strong>
+      </div>
+
+    </div>
+
+
+    <!-- CONFIRMACIONES -->
+
+    <section class="confirmation-summary">
+
+      <article>
+
+        <strong class="green">
+          {{ totalConfirmados }}
+        </strong>
+
+        <span>
+          Confirmados
+        </span>
+
+      </article>
+
+
+      <article>
+
+        <strong class="red">
+          {{ totalNoAsistiran }}
+        </strong>
+
+        <span>
+          No asistirán
+        </span>
+
+      </article>
+
+
+      <article>
+
+        <strong>
+          {{ totalPendientes }}
+        </strong>
+
+        <span>
+          Sin responder
+        </span>
+
+      </article>
+
+
+      <article>
+
+        <strong class="blue">
+          {{ totalAsistentes }}
+        </strong>
+
+        <span>
+          Asistencia real
+        </span>
+
+      </article>
+
+    </section>
+
+
+    <!-- ACCIONES CONVOCATORIA -->
+
+    <div class="match-actions">
+
+      @if (partidoActual.estado === 'Abierta') {
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="cerrarConvocatoria()"
+        >
+          Cerrar convocatoria
+        </button>
+
+      } @else {
+
+        <button
+          type="button"
+          class="secondary-button"
+          (click)="reabrirConvocatoria()"
+        >
+          Reabrir convocatoria
+        </button>
+
+      }
+
+    </div>
+
+  </article>
+
+
+  <!-- ASISTENCIA -->
+
+  <article class="attendance-card">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          ASISTENCIA REAL
+        </span>
+
+        <h3>
+          Miembros del partido
+        </h3>
+
+        <p>
+          Marca quién asistió realmente a jugar.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="players-table">
+
+      <div class="table-header">
+
+        <span>Jugador</span>
+        <span>Confirmación</span>
+        <span>Asistencia real</span>
+
+      </div>
+
+
+      @for (
+        jugador of jugadores;
+        track jugador.id
+      ) {
+
+        <div class="player-row">
+
+          <div class="player">
+
+            <div class="avatar">
+              {{ jugador.nombre.charAt(0) }}
+            </div>
+
+            <strong>
+              {{ jugador.nombre }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span
+              class="confirmation-status"
+              [class.confirmed]="
+                jugador.confirmacion === 'Confirmado'
+              "
+              [class.declined]="
+                jugador.confirmacion === 'No asistirá'
+              "
+            >
+              {{ jugador.confirmacion }}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <button
+              type="button"
+              class="attendance-button"
+              [class.attended]="jugador.asistio"
+              (click)="cambiarAsistencia(jugador)"
+            >
+              {{
+                jugador.asistio
+                  ? 'Asistió'
+                  : 'No asistió'
+              }}
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  </article>
+
+
+  <!-- CÁLCULO -->
+
+  <article class="finance-card">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          CÁLCULO DE LA FECHA
+        </span>
+
+        <h3>
+          Resumen financiero preliminar
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <div class="finance-grid">
+
+      <div>
+
+        <span>
+          Asistentes
+        </span>
+
+        <strong>
+          {{ totalAsistentes }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Recaudación
+        </span>
+
+        <strong>
+          ${{ recaudacion.toFixed(2) }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Costo cancha
+        </span>
+
+        <strong>
+          -${{ partidoActual.costoCancha.toFixed(2) }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Fondo generado
+        </span>
+
+        <strong
+          [class.negative]="fondoGenerado < 0"
+          [class.positive]="fondoGenerado >= 0"
+        >
+          ${{ fondoGenerado.toFixed(2) }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    @if (fondoGenerado > 0) {
+
+      <div class="fund-preview">
+
+        <span>
+          Aporte aproximado al fondo por jugador
+        </span>
+
+        <strong>
+          ${{ aporteReferencia.toFixed(2) }}
+        </strong>
+
+        <small>
+          El reparto definitivo se realizará en centavos
+          exactos al cerrar el partido.
+        </small>
+
+      </div>
+
+    }
+
+
+    @if (fondoGenerado < 0) {
+
+      <div class="deficit-warning">
+
+        La recaudación actual no cubre todavía
+        el costo de la cancha.
+
+      </div>
+
+    }
+    @if (partidoActual.estado !== 'Finalizada') {
+
+    <button
+      type="button"
+      class="close-match-button"
+      (click)="cerrarPartido()"
+    >
+      CERRAR PARTIDO Y GENERAR MOVIMIENTOS
+    </button>
+
+  }
+
+
+  @if (errorCierre) {
+
+    <div class="close-message error">
+
+      {{ errorCierre }}
+
+    </div>
+
+  }
+
+
+  @if (mensajeCierre) {
+
+    <div class="close-message success">
+
+      {{ mensajeCierre }}
+
+    </div>
+
+  }
+
+  </article>
+
+  @if (resumenCierre) {
+
+  <article class="closure-card">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          PARTIDO FINALIZADO
+        </span>
+
+        <h3>
+          Resultado del cierre financiero
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <div class="closure-summary">
+
+      <div>
+
+        <span>
+          Asistentes
+        </span>
+
+        <strong>
+          {{ resumenCierre.asistentes }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          No asistentes
+        </span>
+
+        <strong>
+          {{ resumenCierre.noAsistentes }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Recaudación
+        </span>
+
+        <strong>
+          ${{ resumenCierre.recaudacion.toFixed(2) }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Cancha
+        </span>
+
+        <strong>
+          ${{ resumenCierre.costoCancha.toFixed(2) }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Fondo generado
+        </span>
+
+        <strong class="positive">
+          ${{ resumenCierre.fondoGenerado.toFixed(2) }}
+        </strong>
+
+      </div>
+
+
+      <div>
+
+        <span>
+          Deudas generadas
+        </span>
+
+        <strong class="negative">
+          ${{ resumenCierre.totalDeudas.toFixed(2) }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="movements-title">
+
+      <span class="eyebrow">
+        MOVIMIENTOS GENERADOS
+      </span>
+
+      <h4>
+        Detalle por miembro
+      </h4>
+
+    </div>
+
+
+    <div class="movements-table">
+
+      <div class="movement-header">
+
+        <span>
+          Jugador
+        </span>
+
+        <span>
+          Movimiento
+        </span>
+
+        <span>
+          Valor
+        </span>
+
+      </div>
+
+
+      @for (
+        movimiento of movimientosGenerados;
+        track movimiento.jugadorId
+      ) {
+
+        <div class="movement-row">
+
+          <strong>
+            {{ movimiento.jugadorNombre }}
+          </strong>
+
+
+          <span
+            class="movement-type"
+            [class.credit]="
+              movimiento.tipo === 'credito_fondo'
+            "
+            [class.debt]="
+              movimiento.tipo === 'deuda_fondo'
+            "
+          >
+
+            {{
+              movimiento.tipo === 'credito_fondo'
+                ? 'Fondo a favor'
+                : 'Deuda por no asistencia'
+            }}
+
+          </span>
+
+
+          <strong
+            [class.positive]="
+              movimiento.tipo === 'credito_fondo'
+            "
+            [class.negative]="
+              movimiento.tipo === 'deuda_fondo'
+            "
+          >
+
+            {{
+              movimiento.tipo === 'credito_fondo'
+                ? '+'
+                : '-'
+            }}
+
+            ${{ movimiento.valor.toFixed(2) }}
+
+          </strong>
+
+        </div>
+
+      }
+
+    </div>
+
+  </article>
+
+}
+
+  <!-- MODAL NUEVO PARTIDO -->
+
+  @if (mostrarFormulario) {
+
+    <div class="modal-overlay">
+
+      <section class="modal">
+
+        <header class="modal-header">
+
+          <div>
+
+            <span class="eyebrow">
+              PARTIDOS
+            </span>
+
+            <h3>
+              Nueva fecha
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="cancelarFormulario()"
+          >
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="form-grid">
+
+          <div class="form-group">
+
+            <label>
+              Fecha *
+            </label>
+
+            <input
+              type="date"
+              [(ngModel)]="formularioPartido.fecha"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Hora *
+            </label>
+
+            <input
+              type="time"
+              [(ngModel)]="formularioPartido.hora"
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Cancha *
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="formularioPartido.cancha"
+              placeholder="Nombre de la cancha"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Costo de cancha *
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="
+                formularioPartido.costoCancha
+              "
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Cuota por jugador
+            </label>
+
+            <input
+              type="text"
+              value="$2,25"
+              readonly
+            >
+
+          </div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelarFormulario()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="crearPartido()"
+          >
+            CREAR PARTIDO
+          </button>
+
+        </footer>
+
+      </section>
+
+    </div>
+
+  }
+
+</section>
