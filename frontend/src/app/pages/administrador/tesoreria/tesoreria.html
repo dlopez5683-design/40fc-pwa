@@ -1,0 +1,549 @@
+<section class="treasury-page">
+
+  <!-- CABECERA -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Tesorería
+      </h2>
+
+      <p>
+        Control financiero y aportes de los miembros de 40 FC.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="abrirPago()"
+    >
+      + REGISTRAR PAGO
+    </button>
+
+  </header>
+
+
+  <!-- INDICADORES -->
+
+  <section class="summary-grid">
+
+    <article class="summary-card dark">
+
+      <span>
+        Fondo común
+      </span>
+
+      <strong>
+        ${{ fondoTotal.toFixed(2) }}
+      </strong>
+
+      <small>
+        Acumulado de los miembros
+      </small>
+
+    </article>
+
+
+    <article class="summary-card debt">
+
+      <span>
+        Deudas pendientes
+      </span>
+
+      <strong>
+        ${{ totalDeudas.toFixed(2) }}
+      </strong>
+
+      <small>
+        Total por recaudar
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Cumpleaños recaudado
+      </span>
+
+      <strong>
+        ${{ cumpleanosRecaudado.toFixed(2) }}
+      </strong>
+
+      <small>
+        Pendiente:
+        ${{ cumpleanosPendiente.toFixed(2) }}
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Gala recaudada
+      </span>
+
+      <strong>
+        ${{ galaRecaudada.toFixed(2) }}
+      </strong>
+
+      <small>
+        Pendiente:
+        ${{ galaPendiente.toFixed(2) }}
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- BUSCADOR -->
+
+  <section class="toolbar">
+
+    <div>
+
+      <span class="eyebrow">
+        ESTADO POR MIEMBRO
+      </span>
+
+      <h3>
+        Cuentas individuales
+      </h3>
+
+    </div>
+
+
+    <div class="search-box">
+
+      <span>⌕</span>
+
+      <input
+        type="search"
+        placeholder="Buscar jugador..."
+        [(ngModel)]="busqueda"
+      >
+
+    </div>
+
+  </section>
+
+
+  <!-- TABLA DE TESORERÍA -->
+
+  <article class="table-card">
+
+    <div class="table-header">
+
+      <span>Jugador</span>
+      <span>Fondo</span>
+      <span>Deuda fondo</span>
+      <span>Cumpleaños</span>
+      <span>Gala</span>
+      <span>Deuda total</span>
+      <span>Acción</span>
+
+    </div>
+
+
+    @for (
+      jugador of jugadoresFiltrados;
+      track jugador.id
+    ) {
+
+      <div class="player-row">
+
+        <div class="player">
+
+          <div class="avatar">
+            {{ jugador.nombre.charAt(0) }}
+          </div>
+
+          <strong>
+            {{ jugador.nombre }}
+          </strong>
+
+        </div>
+
+
+        <strong class="positive">
+          ${{ jugador.fondoAcumulado.toFixed(2) }}
+        </strong>
+
+
+        <strong
+          [class.negative]="jugador.deudaFondo > 0"
+        >
+          ${{ jugador.deudaFondo.toFixed(2) }}
+        </strong>
+
+
+        <div class="concept-state">
+
+          <span>
+            Pagado
+            ${{ jugador.cumpleanosPagado.toFixed(2) }}
+          </span>
+
+          @if (deudaCumpleanos(jugador) > 0) {
+
+            <strong class="negative">
+              Debe
+              ${{ deudaCumpleanos(jugador).toFixed(2) }}
+            </strong>
+
+          } @else {
+
+            <strong class="positive">
+              Al día
+            </strong>
+
+          }
+
+        </div>
+
+
+        <div class="concept-state">
+
+          <span>
+            Pagado
+            ${{ jugador.galaPagada.toFixed(2) }}
+          </span>
+
+          @if (deudaGala(jugador) > 0) {
+
+            <strong class="negative">
+              Debe
+              ${{ deudaGala(jugador).toFixed(2) }}
+            </strong>
+
+          } @else {
+
+            <strong class="positive">
+              Al día
+            </strong>
+
+          }
+
+        </div>
+
+
+        <strong
+          [class.negative]="
+            deudaTotalJugador(jugador) > 0
+          "
+          [class.positive]="
+            deudaTotalJugador(jugador) === 0
+          "
+        >
+          ${{ deudaTotalJugador(jugador).toFixed(2) }}
+        </strong>
+
+
+        <button
+          type="button"
+          class="pay-button"
+          (click)="abrirPago(jugador)"
+        >
+          Registrar pago
+        </button>
+
+      </div>
+
+    }
+
+  </article>
+
+
+  <!-- HISTORIAL -->
+
+  <article class="history-card">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          MOVIMIENTOS
+        </span>
+
+        <h3>
+          Últimos pagos registrados
+        </h3>
+
+      </div>
+
+    </div>
+
+
+    <div class="history-table">
+
+      <div class="history-header">
+
+        <span>Fecha</span>
+        <span>Jugador</span>
+        <span>Concepto</span>
+        <span>Forma de pago</span>
+        <span>Valor</span>
+
+      </div>
+
+
+      @for (
+        movimiento of movimientos;
+        track movimiento.id
+      ) {
+
+        <div class="history-row">
+
+          <span>
+            {{ movimiento.fecha }}
+          </span>
+
+          <strong>
+            {{ movimiento.jugadorNombre }}
+          </strong>
+
+          <span>
+            {{ movimiento.concepto }}
+          </span>
+
+          <span
+            class="payment-method"
+          >
+            {{ movimiento.formaPago }}
+          </span>
+
+          <strong class="positive">
+            +${{ movimiento.valor.toFixed(2) }}
+          </strong>
+
+        </div>
+
+      }
+
+    </div>
+
+  </article>
+
+
+  <!-- MODAL REGISTRAR PAGO -->
+
+  @if (mostrarFormularioPago) {
+
+    <div class="modal-overlay">
+
+      <section class="modal">
+
+        <header class="modal-header">
+
+          <div>
+
+            <span class="eyebrow">
+              TESORERÍA
+            </span>
+
+            <h3>
+              Registrar pago
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="cancelarPago()"
+          >
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="form-grid">
+
+          <!-- JUGADOR -->
+
+          <div class="form-group full">
+
+            <label>
+              Jugador *
+            </label>
+
+            <select
+              [(ngModel)]="formularioPago.jugadorId"
+            >
+
+              <option
+                [ngValue]="0"
+              >
+                Seleccionar jugador
+              </option>
+
+
+              @for (
+                jugador of jugadores;
+                track jugador.id
+              ) {
+
+                <option
+                  [ngValue]="jugador.id"
+                >
+                  {{ jugador.nombre }}
+                </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- CONCEPTO -->
+
+          <div class="form-group">
+
+            <label>
+              Concepto *
+            </label>
+
+            <select
+              [(ngModel)]="formularioPago.concepto"
+            >
+
+              <option value="Fondo común">
+                Fondo común
+              </option>
+
+              <option value="Cumpleaños">
+                Cumpleaños
+              </option>
+
+              <option value="Fiesta de gala">
+                Fiesta de gala
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- VALOR -->
+
+          <div class="form-group">
+
+            <label>
+              Valor *
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="formularioPago.valor"
+            >
+
+          </div>
+
+
+          <!-- FORMA DE PAGO -->
+
+          <div class="form-group">
+
+            <label>
+              Forma de pago *
+            </label>
+
+            <select
+              [(ngModel)]="formularioPago.formaPago"
+            >
+
+              <option value="Efectivo">
+                Efectivo
+              </option>
+
+              <option value="Transferencia">
+                Transferencia
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- FECHA -->
+
+          <div class="form-group">
+
+            <label>
+              Fecha *
+            </label>
+
+            <input
+              type="date"
+              [(ngModel)]="formularioPago.fecha"
+            >
+
+          </div>
+
+        </div>
+
+
+        @if (error) {
+
+          <div class="form-message error">
+            {{ error }}
+          </div>
+
+        }
+
+
+        <footer class="modal-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelarPago()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="registrarPago()"
+          >
+            REGISTRAR PAGO
+          </button>
+
+        </footer>
+
+      </section>
+
+    </div>
+
+  }
+
+
+  @if (mensaje) {
+
+    <div class="success-message">
+      {{ mensaje }}
+    </div>
+
+  }
+
+</section>

@@ -11,6 +11,7 @@ import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { AdminDashboard } from './pages/administrador/admin-dashboard/admin-dashboard';
 import { Jugadores } from './pages/administrador/jugadores/jugadores';
 import { Partidos as PartidosAdmin } from './pages/administrador/partidos/partidos';
+import { Tesoreria } from './pages/administrador/tesoreria/tesoreria';
 
 export const routes: Routes = [
   {
@@ -60,6 +61,10 @@ export const routes: Routes = [
 {
   path: 'partidos',
   component: PartidosAdmin
+},
+{
+  path: 'tesoreria',
+  component: Tesoreria
 }
   ]
 }, 
