@@ -13,6 +13,7 @@ import { Jugadores } from './pages/administrador/jugadores/jugadores';
 import { Partidos as PartidosAdmin } from './pages/administrador/partidos/partidos';
 import { Tesoreria } from './pages/administrador/tesoreria/tesoreria';
 import { Actividades as ActividadesAdmin } from './pages/administrador/actividades/actividades';
+import { Reportes } from './pages/administrador/reportes/reportes';
 
 export const routes: Routes = [
   {
@@ -70,6 +71,10 @@ export const routes: Routes = [
 {
   path: 'actividades',
   component: ActividadesAdmin
+},
+{
+  path: 'reportes',
+  component: Reportes
 }
   ]
 }, 

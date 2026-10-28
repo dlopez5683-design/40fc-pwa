@@ -1,0 +1,311 @@
+<section class="reports-page">
+
+  <!-- CABECERA -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Reportes
+      </h2>
+
+      <p>
+        Consulta y exporta información administrativa y financiera de 40 FC.
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="imprimirReporte()"
+      >
+        Imprimir
+      </button>
+
+
+      <button
+        type="button"
+        class="primary-button"
+        (click)="exportarCSV()"
+      >
+        EXPORTAR CSV
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- FILTROS -->
+
+  <section class="filters-card">
+
+    <div class="filter-group">
+
+      <label>
+        Tipo de reporte
+      </label>
+
+      <select
+        [(ngModel)]="tipoReporte"
+      >
+
+        <option value="General">
+          General
+        </option>
+
+        <option value="Partidos">
+          Partidos
+        </option>
+
+        <option value="Tesoreria">
+          Tesorería
+        </option>
+
+        <option value="Actividades">
+          Actividades
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>
+        Desde
+      </label>
+
+      <input
+        type="date"
+        [(ngModel)]="fechaDesde"
+      >
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>
+        Hasta
+      </label>
+
+      <input
+        type="date"
+        [(ngModel)]="fechaHasta"
+      >
+
+    </div>
+
+
+    <button
+      type="button"
+      class="clear-button"
+      (click)="limpiarFiltros()"
+    >
+      Limpiar filtros
+    </button>
+
+  </section>
+
+
+  <!-- INDICADORES -->
+
+  <section class="summary-grid">
+
+    <article class="summary-card dark">
+
+      <span>
+        Registros encontrados
+      </span>
+
+      <strong>
+        {{ totalRegistros }}
+      </strong>
+
+      <small>
+        Según filtros aplicados
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Valor asociado
+      </span>
+
+      <strong>
+        ${{ totalValores.toFixed(2) }}
+      </strong>
+
+      <small>
+        Suma de registros visibles
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Partidos
+      </span>
+
+      <strong>
+        {{ totalPartidos }}
+      </strong>
+
+      <small>
+        Registros deportivos
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Movimientos de tesorería
+      </span>
+
+      <strong>
+        {{ totalMovimientosTesoreria }}
+      </strong>
+
+      <small>
+        Pagos registrados
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- TABLA -->
+
+  <article
+    class="report-card"
+    id="reporte-imprimible"
+  >
+
+    <div class="report-title">
+
+      <div>
+
+        <span class="eyebrow">
+          40 FC
+        </span>
+
+        <h3>
+          Reporte {{ tipoReporte }}
+        </h3>
+
+      </div>
+
+
+      <span class="result-count">
+
+        {{ totalRegistros }}
+        registros
+
+      </span>
+
+    </div>
+
+
+    <div class="report-table">
+
+      <div class="table-header">
+
+        <span>Fecha</span>
+        <span>Categoría</span>
+        <span>Detalle</span>
+        <span>Estado</span>
+        <span>Valor</span>
+
+      </div>
+
+
+      @for (
+        registro of registrosFiltrados;
+        track registro.id
+      ) {
+
+        <div class="report-row">
+
+          <span>
+            {{ registro.fecha }}
+          </span>
+
+
+          <span
+            class="category"
+            [class.partidos]="
+              registro.categoria === 'Partidos'
+            "
+            [class.tesoreria]="
+              registro.categoria === 'Tesoreria'
+            "
+            [class.actividades]="
+              registro.categoria === 'Actividades'
+            "
+          >
+            {{ registro.categoria }}
+          </span>
+
+
+          <strong>
+            {{ registro.detalle }}
+          </strong>
+
+
+          <span>
+            {{ registro.estado }}
+          </span>
+
+
+          <strong class="value">
+            ${{ registro.valor.toFixed(2) }}
+          </strong>
+
+        </div>
+
+      }
+
+
+      @if (registrosFiltrados.length === 0) {
+
+        <div class="empty-state">
+
+          No existen registros con los filtros seleccionados.
+
+        </div>
+
+      }
+
+    </div>
+
+  </article>
+
+
+  @if (mensaje) {
+
+    <div class="success-message">
+      {{ mensaje }}
+    </div>
+
+  }
+
+</section>

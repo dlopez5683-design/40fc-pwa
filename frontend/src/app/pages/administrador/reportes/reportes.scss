@@ -1,0 +1,511 @@
+.reports-page {
+  max-width: 1350px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  color: #e5232d;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+
+/* =====================================================
+   CABECERA
+   ===================================================== */
+
+.page-header {
+  margin-bottom: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.page-header h2 {
+  margin: 7px 0 5px;
+
+  color: #111318;
+
+  font-size: 2rem;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: #7b838d;
+
+  font-size: 0.86rem;
+}
+
+
+.header-actions {
+  display: flex;
+
+  gap: 9px;
+}
+
+
+.primary-button,
+.secondary-button,
+.clear-button {
+  padding: 12px 17px;
+
+  border-radius: 10px;
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.primary-button {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e5232d,
+      #b9141e
+    );
+
+  color: white;
+}
+
+
+.secondary-button,
+.clear-button {
+  border: 1px solid #dfe3e7;
+
+  background: white;
+
+  color: #59616a;
+}
+
+
+/* =====================================================
+   FILTROS
+   ===================================================== */
+
+.filters-card {
+  margin-bottom: 20px;
+
+  padding: 19px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.3fr 1fr 1fr auto;
+
+  gap: 15px;
+
+  align-items: end;
+
+  border: 1px solid #e7e9ec;
+  border-radius: 17px;
+
+  background: white;
+}
+
+
+.filter-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.filter-group label {
+  color: #68717a;
+
+  font-size: 0.67rem;
+  font-weight: 600;
+}
+
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+
+  padding: 11px 12px;
+
+  border: 1px solid #dfe3e7;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #fafbfc;
+
+  color: #30353b;
+}
+
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #74c7ee;
+
+  box-shadow:
+    0 0 0 3px rgba(116,199,238,0.1);
+}
+
+
+/* =====================================================
+   RESUMEN
+   ===================================================== */
+
+.summary-grid {
+  margin-bottom: 22px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+}
+
+
+.summary-card {
+  padding: 21px;
+
+  border: 1px solid #e7e9ec;
+  border-radius: 18px;
+
+  background: white;
+}
+
+
+.summary-card.dark {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111318,
+      #071c31
+    );
+}
+
+
+.summary-card span {
+  color: #818a93;
+
+  font-size: 0.68rem;
+}
+
+
+.summary-card.dark span {
+  color: rgba(255,255,255,0.56);
+}
+
+
+.summary-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #20252a;
+
+  font-size: 1.55rem;
+}
+
+
+.summary-card.dark strong {
+  color: white;
+}
+
+
+.summary-card small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #979fa8;
+
+  font-size: 0.64rem;
+}
+
+
+.summary-card.dark small {
+  color: rgba(255,255,255,0.42);
+}
+
+
+/* =====================================================
+   REPORTE
+   ===================================================== */
+
+.report-card {
+  padding: 24px;
+
+  border: 1px solid #e7e9ec;
+  border-radius: 19px;
+
+  background: white;
+}
+
+
+.report-title {
+  margin-bottom: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 20px;
+}
+
+
+.report-title h3 {
+  margin: 6px 0 0;
+
+  color: #20252a;
+}
+
+
+.result-count {
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: #f2f4f6;
+
+  color: #767f88;
+
+  font-size: 0.63rem;
+  font-weight: 700;
+}
+
+
+/* TABLA */
+
+.report-table {
+  width: 100%;
+}
+
+
+.table-header,
+.report-row {
+  display: grid;
+
+  grid-template-columns:
+    0.8fr 0.9fr 1.8fr 1fr 0.7fr;
+
+  gap: 14px;
+
+  align-items: center;
+}
+
+
+.table-header {
+  padding: 12px 13px;
+
+  border-radius: 9px;
+
+  background: #f7f8fa;
+
+  color: #858e97;
+
+  font-size: 0.59rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+
+.report-row {
+  padding: 14px 13px;
+
+  border-bottom: 1px solid #edf0f2;
+
+  font-size: 0.7rem;
+}
+
+
+.report-row:last-child {
+  border-bottom: 0;
+}
+
+
+.report-row > strong {
+  color: #30353b;
+
+  font-size: 0.72rem;
+}
+
+
+.category {
+  width: fit-content;
+
+  padding: 5px 8px;
+
+  border-radius: 20px;
+
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+
+.category.partidos {
+  background: #edf6fb;
+
+  color: #397ca1;
+}
+
+
+.category.tesoreria {
+  background: #eaf8f1;
+
+  color: #258a60;
+}
+
+
+.category.actividades {
+  background: #fff2e8;
+
+  color: #bc6a22;
+}
+
+
+.value {
+  text-align: right;
+}
+
+
+.empty-state {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #939ba4;
+
+  font-size: 0.75rem;
+}
+
+
+/* MENSAJE */
+
+.success-message {
+  position: fixed;
+
+  right: 22px;
+  bottom: 22px;
+
+  z-index: 900;
+
+  padding: 13px 17px;
+
+  border-radius: 11px;
+
+  background: #eaf8f1;
+
+  color: #258a60;
+
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  box-shadow:
+    0 12px 35px rgba(0,0,0,0.12);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .filters-card {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .page-header {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .header-actions {
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+
+  .filters-card {
+    grid-template-columns: 1fr;
+  }
+
+
+  .table-header {
+    display: none;
+  }
+
+
+  .report-row {
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 8px 15px;
+  }
+
+
+  .report-row > strong:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+
+
+  .value {
+    text-align: left;
+  }
+
+}
+
+
+/* =====================================================
+   IMPRESIÓN
+   ===================================================== */
+
+@media print {
+
+  .page-header,
+  .filters-card,
+  .summary-grid,
+  .success-message {
+    display: none !important;
+  }
+
+
+  .report-card {
+    border: 0;
+
+    padding: 0;
+  }
+
+
+  .report-row,
+  .table-header {
+    break-inside: avoid;
+  }
+
+}
