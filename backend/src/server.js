@@ -2,27 +2,50 @@ require('dotenv').config();
 
 const app = require('./app');
 
+const connectDatabase =
+  require('./config/database');
+
 
 const PORT =
   process.env.PORT || 3000;
 
 
-app.listen(PORT, () => {
+/* =====================================================
+   INICIAR SERVIDOR
+   ===================================================== */
 
-  console.log('');
-  console.log('====================================');
-  console.log('       40 FC - BACKEND API');
-  console.log('====================================');
+const startServer = async () => {
 
-  console.log(
-    `Servidor ejecutándose en http://localhost:${PORT}`
-  );
+  /*
+   * Primero conectamos MongoDB.
+   */
+  await connectDatabase();
 
-  console.log(
-    `API disponible en http://localhost:${PORT}/api`
-  );
 
-  console.log('====================================');
-  console.log('');
+  /*
+   * Después iniciamos Express.
+   */
+  app.listen(PORT, () => {
 
-});
+    console.log('');
+    console.log('====================================');
+    console.log('       40 FC - BACKEND API');
+    console.log('====================================');
+
+    console.log(
+      `Servidor: http://localhost:${PORT}`
+    );
+
+    console.log(
+      `API: http://localhost:${PORT}/api`
+    );
+
+    console.log('====================================');
+    console.log('');
+
+  });
+
+};
+
+
+startServer();
