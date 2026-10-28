@@ -1,0 +1,635 @@
+<section class="activities-admin-page">
+
+  <!-- CABECERA -->
+
+  <header class="page-header">
+
+    <div>
+
+      <span class="eyebrow">
+        ADMINISTRACIÓN
+      </span>
+
+      <h2>
+        Actividades
+      </h2>
+
+      <p>
+        Crea y administra aportes, eventos y actividades extraordinarias de 40 FC.
+      </p>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="abrirNuevaActividad()"
+    >
+      + NUEVA ACTIVIDAD
+    </button>
+
+  </header>
+
+
+  <!-- INDICADORES -->
+
+  <section class="summary-grid">
+
+    <article class="summary-card">
+
+      <span>
+        Actividades
+      </span>
+
+      <strong>
+        {{ totalActividades }}
+      </strong>
+
+      <small>
+        Registradas
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Actividades activas
+      </span>
+
+      <strong class="positive">
+        {{ totalActivas }}
+      </strong>
+
+      <small>
+        Actualmente vigentes
+      </small>
+
+    </article>
+
+
+    <article class="summary-card dark">
+
+      <span>
+        Total esperado
+      </span>
+
+      <strong>
+        ${{ totalEsperadoGeneral.toFixed(2) }}
+      </strong>
+
+      <small>
+        Según miembros asignados
+      </small>
+
+    </article>
+
+
+    <article class="summary-card">
+
+      <span>
+        Pendiente
+      </span>
+
+      <strong class="negative">
+        ${{ totalPendienteGeneral.toFixed(2) }}
+      </strong>
+
+      <small>
+        Por recaudar
+      </small>
+
+    </article>
+
+  </section>
+
+
+  <!-- BUSCADOR -->
+
+  <section class="toolbar">
+
+    <div>
+
+      <span class="eyebrow">
+        ACTIVIDADES DEL CLUB
+      </span>
+
+      <h3>
+        Gestión de conceptos
+      </h3>
+
+    </div>
+
+
+    <div class="search-box">
+
+      <span>⌕</span>
+
+      <input
+        type="search"
+        placeholder="Buscar actividad..."
+        [(ngModel)]="busqueda"
+      >
+
+    </div>
+
+  </section>
+
+
+  <!-- LISTA -->
+
+  <section class="activities-grid">
+
+    @for (
+      actividad of actividadesFiltradas;
+      track actividad.id
+    ) {
+
+      <article class="activity-card">
+
+        <div class="activity-header">
+
+          <div>
+
+            <span class="activity-type">
+              {{ actividad.tipo }}
+            </span>
+
+            <h3>
+              {{ actividad.nombre }}
+            </h3>
+
+          </div>
+
+
+          <span
+            class="status"
+            [class.closed]="
+              actividad.estado === 'Cerrada'
+            "
+          >
+            {{ actividad.estado }}
+          </span>
+
+        </div>
+
+
+        <p class="description">
+          {{ actividad.descripcion }}
+        </p>
+
+
+        <div class="activity-data">
+
+          <div>
+
+            <span>
+              Valor por miembro
+            </span>
+
+            <strong>
+              ${{ actividad.valorPorMiembro.toFixed(2) }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Fecha límite
+            </span>
+
+            <strong>
+              {{ actividad.fechaLimite || 'Sin fecha' }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Miembros
+            </span>
+
+            <strong>
+              {{ actividad.participantes.length }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="financial-data">
+
+          <div>
+
+            <span>
+              Esperado
+            </span>
+
+            <strong>
+              ${{ totalEsperado(actividad).toFixed(2) }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Recaudado
+            </span>
+
+            <strong class="positive">
+              ${{ totalRecaudado(actividad).toFixed(2) }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>
+              Pendiente
+            </span>
+
+            <strong
+              [class.negative]="
+                totalPendiente(actividad) > 0
+              "
+            >
+              ${{ totalPendiente(actividad).toFixed(2) }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <!-- PROGRESO -->
+
+        <div class="progress-section">
+
+          <div class="progress-header">
+
+            <span>
+              Progreso de recaudación
+            </span>
+
+            <strong>
+              {{ porcentajeRecaudado(actividad).toFixed(0) }}%
+            </strong>
+
+          </div>
+
+
+          <div class="progress-track">
+
+            <div
+              class="progress-bar"
+              [style.width.%]="
+                porcentajeRecaudado(actividad)
+              "
+            ></div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ACCIONES -->
+
+        <footer class="activity-actions">
+
+          <button
+            type="button"
+            class="details-button"
+            (click)="verDetalle(actividad)"
+          >
+            Ver detalle
+          </button>
+
+
+          <button
+            type="button"
+            class="edit-button"
+            (click)="editarActividad(actividad)"
+          >
+            Editar
+          </button>
+
+
+          <button
+            type="button"
+            class="state-button"
+            (click)="cambiarEstado(actividad)"
+          >
+            {{
+              actividad.estado === 'Activa'
+                ? 'Cerrar'
+                : 'Reabrir'
+            }}
+          </button>
+
+        </footer>
+
+      </article>
+
+    }
+
+  </section>
+
+
+  <!-- MODAL CREAR / EDITAR -->
+
+  @if (mostrarFormulario) {
+
+    <div class="modal-overlay">
+
+      <section class="modal">
+
+        <header class="modal-header">
+
+          <div>
+
+            <span class="eyebrow">
+              ACTIVIDADES
+            </span>
+
+            <h3>
+              {{
+                editandoId !== null
+                  ? 'Editar actividad'
+                  : 'Nueva actividad'
+              }}
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="cancelarFormulario()"
+          >
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+
+            <label>
+              Nombre *
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="formulario.nombre"
+              placeholder="Ej. Paseo 40 FC"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Tipo *
+            </label>
+
+            <select
+              [(ngModel)]="formulario.tipo"
+            >
+
+              <option value="Periodica">
+                Periódica
+              </option>
+
+              <option value="Evento">
+                Evento
+              </option>
+
+              <option value="Extraordinaria">
+                Extraordinaria
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Valor por miembro *
+            </label>
+
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              [(ngModel)]="
+                formulario.valorPorMiembro
+              "
+            >
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Descripción
+            </label>
+
+            <textarea
+              rows="4"
+              [(ngModel)]="
+                formulario.descripcion
+              "
+              placeholder="Describe la finalidad de la actividad"
+            ></textarea>
+
+          </div>
+
+
+          <div class="form-group full">
+
+            <label>
+              Fecha límite
+            </label>
+
+            <input
+              type="date"
+              [(ngModel)]="
+                formulario.fechaLimite
+              "
+            >
+
+          </div>
+
+        </div>
+
+
+        <footer class="modal-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="cancelarFormulario()"
+          >
+            Cancelar
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="guardarActividad()"
+          >
+            {{
+              editandoId !== null
+                ? 'GUARDAR CAMBIOS'
+                : 'CREAR ACTIVIDAD'
+            }}
+          </button>
+
+        </footer>
+
+      </section>
+
+    </div>
+
+  }
+
+
+  <!-- DETALLE -->
+
+  @if (actividadDetalle) {
+
+    <div class="modal-overlay">
+
+      <section class="modal detail-modal">
+
+        <header class="modal-header">
+
+          <div>
+
+            <span class="eyebrow">
+              DETALLE
+            </span>
+
+            <h3>
+              {{ actividadDetalle.nombre }}
+            </h3>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="cerrarDetalle()"
+          >
+            ×
+          </button>
+
+        </header>
+
+
+        <div class="detail-summary">
+
+          <div>
+            <span>Valor por miembro</span>
+            <strong>
+              ${{ actividadDetalle.valorPorMiembro.toFixed(2) }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Total esperado</span>
+            <strong>
+              ${{ totalEsperado(actividadDetalle).toFixed(2) }}
+            </strong>
+          </div>
+
+          <div>
+            <span>Recaudado</span>
+            <strong class="positive">
+              ${{ totalRecaudado(actividadDetalle).toFixed(2) }}
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div class="participants">
+
+          <div class="participant-header">
+
+            <span>Jugador</span>
+            <span>Pagado</span>
+            <span>Pendiente</span>
+
+          </div>
+
+
+          @for (
+            participante of actividadDetalle.participantes;
+            track participante.jugadorId
+          ) {
+
+            <div class="participant-row">
+
+              <strong>
+                {{ participante.nombre }}
+              </strong>
+
+              <span class="positive">
+                ${{ participante.pagado.toFixed(2) }}
+              </span>
+
+              <span
+                [class.negative]="
+                  pendienteParticipante(
+                    actividadDetalle,
+                    participante
+                  ) > 0
+                "
+                [class.positive]="
+                  pendienteParticipante(
+                    actividadDetalle,
+                    participante
+                  ) === 0
+                "
+              >
+                ${{
+                  pendienteParticipante(
+                    actividadDetalle,
+                    participante
+                  ).toFixed(2)
+                }}
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+    </div>
+
+  }
+
+</section>

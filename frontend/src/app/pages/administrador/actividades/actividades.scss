@@ -1,0 +1,662 @@
+.activities-admin-page {
+  max-width: 1350px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  color: #e5232d;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+
+/* CABECERA */
+
+.page-header {
+  margin-bottom: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.page-header h2 {
+  margin: 7px 0 5px;
+
+  color: #111318;
+
+  font-size: 2rem;
+}
+
+.page-header p {
+  margin: 0;
+
+  color: #7b838d;
+
+  font-size: 0.86rem;
+}
+
+.primary-button,
+.save-button {
+  padding: 13px 18px;
+
+  border: 0;
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e5232d,
+      #b9141e
+    );
+
+  color: white;
+
+  font-size: 0.72rem;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+/* RESUMEN */
+
+.summary-grid {
+  margin-bottom: 22px;
+
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 15px;
+}
+
+.summary-card {
+  padding: 21px;
+
+  border: 1px solid #e7e9ec;
+  border-radius: 18px;
+
+  background: white;
+}
+
+.summary-card.dark {
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111318,
+      #071c31
+    );
+}
+
+.summary-card span {
+  color: #818a93;
+
+  font-size: 0.68rem;
+}
+
+.summary-card.dark span {
+  color: rgba(255,255,255,0.58);
+}
+
+.summary-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #20252a;
+
+  font-size: 1.55rem;
+}
+
+.summary-card.dark strong {
+  color: white;
+}
+
+.summary-card small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #979fa8;
+
+  font-size: 0.64rem;
+}
+
+.summary-card.dark small {
+  color: rgba(255,255,255,0.42);
+}
+
+.positive {
+  color: #258a60 !important;
+}
+
+.negative {
+  color: #d54242 !important;
+}
+
+
+/* TOOLBAR */
+
+.toolbar {
+  margin-bottom: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  gap: 20px;
+}
+
+.toolbar h3 {
+  margin: 5px 0 0;
+}
+
+.search-box {
+  width: min(380px, 100%);
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dfe3e7;
+  border-radius: 11px;
+
+  background: white;
+}
+
+.search-box input {
+  width: 100%;
+
+  padding: 11px 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+}
+
+
+/* ACTIVIDADES */
+
+.activities-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+.activity-card {
+  padding: 23px;
+
+  border: 1px solid #e7e9ec;
+  border-radius: 19px;
+
+  background: white;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 15px;
+}
+
+.activity-type {
+  color: #74a9c8;
+
+  font-size: 0.61rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+.activity-header h3 {
+  margin: 6px 0 0;
+
+  color: #1e2328;
+}
+
+.status {
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  background: #eaf8f1;
+
+  color: #258a60;
+
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.status.closed {
+  background: #f0f1f3;
+
+  color: #757d86;
+}
+
+.description {
+  min-height: 38px;
+
+  margin: 17px 0;
+
+  color: #818a93;
+
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+
+/* DATOS */
+
+.activity-data,
+.financial-data {
+  padding: 17px 0;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  border-top: 1px solid #edf0f2;
+}
+
+.financial-data {
+  border-bottom: 1px solid #edf0f2;
+}
+
+.activity-data div,
+.financial-data div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.activity-data span,
+.financial-data span {
+  color: #929aa3;
+
+  font-size: 0.61rem;
+}
+
+.activity-data strong,
+.financial-data strong {
+  color: #292e34;
+
+  font-size: 0.8rem;
+}
+
+
+/* PROGRESO */
+
+.progress-section {
+  margin-top: 18px;
+}
+
+.progress-header {
+  margin-bottom: 7px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-header span,
+.progress-header strong {
+  color: #777f88;
+
+  font-size: 0.63rem;
+}
+
+.progress-track {
+  height: 7px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: #edf0f2;
+}
+
+.progress-bar {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #e5232d,
+      #74c7ee
+    );
+}
+
+
+/* ACCIONES */
+
+.activity-actions {
+  margin-top: 20px;
+
+  display: flex;
+  gap: 8px;
+}
+
+.activity-actions button {
+  padding: 8px 11px;
+
+  border-radius: 8px;
+
+  font-size: 0.62rem;
+
+  cursor: pointer;
+}
+
+.details-button {
+  border: 0;
+
+  background: #111318;
+
+  color: white;
+}
+
+.edit-button,
+.state-button {
+  border: 1px solid #dfe3e7;
+
+  background: white;
+
+  color: #555e67;
+}
+
+
+/* MODAL */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  padding: 20px;
+
+  display: grid;
+  place-items: center;
+
+  background: rgba(7,10,14,0.68);
+
+  backdrop-filter: blur(5px);
+}
+
+.modal {
+  width: min(600px, 100%);
+
+  max-height: calc(100vh - 40px);
+
+  overflow-y: auto;
+
+  padding: 28px;
+
+  border-radius: 22px;
+
+  background: white;
+
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+  margin-bottom: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modal-header h3 {
+  margin: 6px 0 0;
+
+  color: #1c2126;
+}
+
+.close-button {
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #f3f4f6;
+
+  font-size: 1.2rem;
+
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  color: #606871;
+
+  font-size: 0.69rem;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  padding: 12px 13px;
+
+  border: 1px solid #dfe3e7;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #fafbfc;
+
+  color: #30353b;
+
+  font-family: inherit;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.modal-actions {
+  margin-top: 25px;
+  padding-top: 20px;
+
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  border-top: 1px solid #edf0f2;
+}
+
+.cancel-button {
+  padding: 12px 17px;
+
+  border: 1px solid #dfe3e7;
+  border-radius: 10px;
+
+  background: white;
+
+  cursor: pointer;
+}
+
+
+/* DETALLE */
+
+.detail-modal {
+  width: min(700px, 100%);
+}
+
+.detail-summary {
+  margin-bottom: 20px;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.detail-summary div {
+  padding: 15px;
+
+  border-radius: 12px;
+
+  background: #f7f8fa;
+}
+
+.detail-summary span {
+  display: block;
+
+  color: #8d959e;
+
+  font-size: 0.62rem;
+}
+
+.detail-summary strong {
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 0.95rem;
+}
+
+
+/* PARTICIPANTES */
+
+.participant-header,
+.participant-row {
+  display: grid;
+
+  grid-template-columns:
+    1.5fr 0.8fr 0.8fr;
+
+  gap: 12px;
+
+  align-items: center;
+}
+
+.participant-header {
+  padding: 11px 12px;
+
+  border-radius: 9px;
+
+  background: #f7f8fa;
+
+  color: #858e97;
+
+  font-size: 0.6rem;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.participant-row {
+  padding: 13px 12px;
+
+  border-bottom: 1px solid #edf0f2;
+
+  font-size: 0.7rem;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .page-header,
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-button,
+  .search-box {
+    width: 100%;
+  }
+
+  .activity-data,
+  .financial-data {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full {
+    grid-column: auto;
+  }
+
+  .detail-summary {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 9px;
+  }
+
+  .activity-card {
+    padding: 18px 15px;
+  }
+
+  .activity-actions {
+    flex-wrap: wrap;
+  }
+
+}

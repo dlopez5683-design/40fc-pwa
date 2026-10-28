@@ -12,6 +12,7 @@ import { AdminDashboard } from './pages/administrador/admin-dashboard/admin-dash
 import { Jugadores } from './pages/administrador/jugadores/jugadores';
 import { Partidos as PartidosAdmin } from './pages/administrador/partidos/partidos';
 import { Tesoreria } from './pages/administrador/tesoreria/tesoreria';
+import { Actividades as ActividadesAdmin } from './pages/administrador/actividades/actividades';
 
 export const routes: Routes = [
   {
@@ -65,6 +66,10 @@ export const routes: Routes = [
 {
   path: 'tesoreria',
   component: Tesoreria
+},
+{
+  path: 'actividades',
+  component: ActividadesAdmin
 }
   ]
 }, 
