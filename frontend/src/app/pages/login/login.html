@@ -65,7 +65,7 @@
 
         <form
   class="login-form"
-  (submit)="entrarComoJugador($event)"
+  (ngSubmit)="iniciarSesion()"
 >
 
           <div class="form-group">
@@ -80,6 +80,7 @@
               type="email"
               placeholder="usuario@40fc.com"
               autocomplete="email"
+              [(ngModel)]="email"
             >
 
           </div>
@@ -97,17 +98,31 @@
               type="password"
               placeholder="Ingresa tu contraseña"
               autocomplete="current-password"
+              [(ngModel)]="password"
             >
 
           </div>
 
+          @if (error) {
+
+  <div class="login-error">
+    {{ error }}
+  </div>
+
+}
+
 
           <button
-            type="submit"
-            class="login-button"
-          >
-            INICIAR SESIÓN
-          </button>
+  type="submit"
+  class="login-button"
+  [disabled]="cargando"
+>
+  {{
+    cargando
+      ? 'INGRESANDO...'
+      : 'INICIAR SESIÓN'
+  }}
+</button>
 
         </form>
 

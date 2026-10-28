@@ -453,3 +453,29 @@
   }
 
 }
+
+.login-error {
+  padding: 11px 13px;
+
+  border: 1px solid
+    rgba(229, 35, 45, 0.22);
+
+  border-radius: 10px;
+
+  background:
+    rgba(229, 35, 45, 0.08);
+
+  color: #ff7279;
+
+  font-size: 0.75rem;
+
+  line-height: 1.4;
+}
+
+.login-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
