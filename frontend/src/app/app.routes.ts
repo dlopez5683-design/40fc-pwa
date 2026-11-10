@@ -14,6 +14,8 @@ import { Partidos as PartidosAdmin } from './pages/administrador/partidos/partid
 import { Tesoreria } from './pages/administrador/tesoreria/tesoreria';
 import { Actividades as ActividadesAdmin } from './pages/administrador/actividades/actividades';
 import { Reportes } from './pages/administrador/reportes/reportes';
+import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -22,9 +24,23 @@ export const routes: Routes = [
   },
 
   {
-    path: 'jugador',
-    component: JugadorLayout,
-    children: [
+  path: 'jugador',
+
+  component:
+    JugadorLayout,
+
+  canActivate: [
+    authGuard,
+    roleGuard
+  ],
+
+  data: {
+    roles: [
+      'JUGADOR'
+    ]
+  },
+
+  children: [
       {
         path: '',
         component: Dashboard
@@ -50,7 +66,22 @@ export const routes: Routes = [
 
  {
   path: 'admin',
-  component: AdminLayout,
+
+  component:
+    AdminLayout,
+
+  canActivate: [
+    authGuard,
+    roleGuard
+  ],
+
+  data: {
+    roles: [
+      'ADMIN',
+      'TI'
+    ]
+  },
+
   children: [
     {
       path: '',

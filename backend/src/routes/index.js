@@ -8,6 +8,8 @@ const authRoutes =
 const router =
   express.Router();
 
+const playerRoutes =
+  require('./playerRoutes');
 
 /* =====================================================
    HEALTH
@@ -41,6 +43,12 @@ router.use(
   '/auth',
   authRoutes
 );
+
+router.use(
+  '/jugadores',
+  playerRoutes
+);
+
 
 
 module.exports =

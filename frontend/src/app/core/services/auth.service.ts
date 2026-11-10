@@ -17,10 +17,15 @@ export interface UsuarioAutenticado {
 export interface LoginResponse {
   ok: boolean;
   token: string;
-
   usuario: UsuarioAutenticado;
-
   jugadorId: string | null;
+}
+
+interface JwtPayload {
+  userId?: string;
+  rol?: RolUsuario;
+  iat?: number;
+  exp?: number;
 }
 
 @Injectable({
@@ -33,6 +38,11 @@ export class AuthService {
 
   private readonly apiUrl =
     'http://localhost:3000/api/auth';
+
+
+  /* =====================================================
+     LOGIN
+     ===================================================== */
 
   login(
     email: string,
@@ -62,9 +72,7 @@ export class AuthService {
             )
           );
 
-          if (
-            respuesta.jugadorId
-          ) {
+          if (respuesta.jugadorId) {
 
             localStorage.setItem(
               '40fc_jugador_id',
@@ -85,6 +93,10 @@ export class AuthService {
   }
 
 
+  /* =====================================================
+     TOKEN
+     ===================================================== */
+
   obtenerToken(): string | null {
 
     return localStorage.getItem(
@@ -93,6 +105,83 @@ export class AuthService {
 
   }
 
+
+  private obtenerPayloadToken():
+    JwtPayload | null {
+
+    const token =
+      this.obtenerToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+
+      const partes =
+        token.split('.');
+
+      if (partes.length !== 3) {
+        return null;
+      }
+
+      const payloadBase64 =
+        partes[1]
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+
+      const payload =
+        decodeURIComponent(
+          atob(payloadBase64)
+            .split('')
+            .map(
+              caracter =>
+                '%' +
+                (
+                  '00' +
+                  caracter
+                    .charCodeAt(0)
+                    .toString(16)
+                ).slice(-2)
+            )
+            .join('')
+        );
+
+      return JSON.parse(
+        payload
+      ) as JwtPayload;
+
+    } catch {
+
+      return null;
+
+    }
+
+  }
+
+
+  tokenExpirado(): boolean {
+
+    const payload =
+      this.obtenerPayloadToken();
+
+    if (!payload?.exp) {
+      return true;
+    }
+
+    const ahora =
+      Math.floor(
+        Date.now() / 1000
+      );
+
+    return payload.exp <= ahora;
+
+  }
+
+
+  /* =====================================================
+     USUARIO
+     ===================================================== */
 
   obtenerUsuario():
     UsuarioAutenticado | null {
@@ -121,13 +210,6 @@ export class AuthService {
   }
 
 
-  estaAutenticado(): boolean {
-
-    return !!this.obtenerToken();
-
-  }
-
-
   obtenerRol():
     RolUsuario | null {
 
@@ -139,6 +221,64 @@ export class AuthService {
 
   }
 
+
+  obtenerJugadorId():
+    string | null {
+
+    return localStorage.getItem(
+      '40fc_jugador_id'
+    );
+
+  }
+
+
+  /* =====================================================
+     ESTADO DE SESIÓN
+     ===================================================== */
+
+  estaAutenticado(): boolean {
+
+    const token =
+      this.obtenerToken();
+
+    if (!token) {
+      return false;
+    }
+
+    if (this.tokenExpirado()) {
+
+      this.cerrarSesion();
+
+      return false;
+
+    }
+
+    return true;
+
+  }
+
+
+  tieneRol(
+    rolesPermitidos: RolUsuario[]
+  ): boolean {
+
+    const rol =
+      this.obtenerRol();
+
+    if (!rol) {
+      return false;
+    }
+
+    return rolesPermitidos.includes(
+      rol
+    );
+
+  }
+
+
+  /* =====================================================
+     LOGOUT
+     ===================================================== */
 
   cerrarSesion(): void {
 

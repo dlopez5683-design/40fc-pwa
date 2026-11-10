@@ -168,15 +168,28 @@
 }
 
 .logout {
+  width: 100%;
+
   display: block;
 
   padding: 12px 14px;
 
-  color: rgba(255,255,255,0.48);
+  border: 0;
 
-  font-size: 0.78rem;
+  background: transparent;
 
-  text-decoration: none;
+  color: rgba(
+    255,
+    255,
+    255,
+    0.5
+  );
+
+  font-size: 0.8rem;
+
+  text-align: left;
+
+  cursor: pointer;
 }
 
 

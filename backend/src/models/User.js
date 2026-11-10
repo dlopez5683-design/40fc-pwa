@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+const mongoose =
+  require('mongoose');
 
 
 const userSchema =
@@ -6,30 +7,50 @@ const userSchema =
     {
 
       nombre: {
-        type: String,
-        required: true,
-        trim: true
+        type:
+          String,
+
+        required:
+          true,
+
+        trim:
+          true
       },
 
 
       email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        trim: true
+        type:
+          String,
+
+        required:
+          true,
+
+        unique:
+          true,
+
+        lowercase:
+          true,
+
+        trim:
+          true
       },
 
 
       password: {
-        type: String,
-        required: true,
-        select: false
+        type:
+          String,
+
+        required:
+          true,
+
+        select:
+          false
       },
 
 
       rol: {
-        type: String,
+        type:
+          String,
 
         enum: [
           'JUGADOR',
@@ -37,21 +58,26 @@ const userSchema =
           'TI'
         ],
 
-        default: 'JUGADOR'
+        default:
+          'JUGADOR'
       },
 
 
       activo: {
-        type: Boolean,
-        default: true
+        type:
+          Boolean,
+
+        default:
+          true
       }
 
     },
-
     {
-      timestamps: true
-    }
 
+      timestamps:
+        true
+
+    }
   );
 
 

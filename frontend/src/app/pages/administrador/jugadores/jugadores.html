@@ -3,6 +3,7 @@
   <header class="page-header">
 
     <div>
+
       <span class="eyebrow">
         ADMINISTRACIÓN
       </span>
@@ -14,18 +15,47 @@
       <p>
         Administra los miembros registrados en 40 FC.
       </p>
+
     </div>
 
 
     <button
-      type="button"
-      class="primary-button"
-      (click)="abrirNuevoJugador()"
-    >
-      + NUEVO JUGADOR
-    </button>
+  type="button"
+  class="primary-button"
+  (click)="abrirNuevoJugador()"
+>
+  + NUEVO JUGADOR
+</button>
 
   </header>
+
+
+  <!-- MENSAJES -->
+
+  @if (
+    mensajeExito
+    &&
+    !mostrarFormulario
+  ) {
+
+    <div class="success-message">
+      {{ mensajeExito }}
+    </div>
+
+  }
+
+
+  @if (
+    mensajeError
+    &&
+    !mostrarFormulario
+  ) {
+
+    <div class="error-message">
+      {{ mensajeError }}
+    </div>
+
+  }
 
 
   <!-- RESUMEN -->
@@ -99,97 +129,253 @@
     <div class="table-header">
 
       <span>Jugador</span>
+
       <span>Contacto</span>
+
       <span>Nacimiento</span>
+
       <span>Ingreso</span>
+
       <span>Estado</span>
+
       <span>Acciones</span>
 
     </div>
 
 
-    @for (jugador of jugadoresFiltrados; track jugador.id) {
+    @if (cargando) {
 
       <div class="player-row">
 
         <div class="player">
 
-          <div class="player-avatar">
-            {{ jugador.nombre.charAt(0) }}
-          </div>
-
           <div>
+
             <strong>
-              {{ jugador.nombre }}
+              Cargando jugadores...
             </strong>
 
             <span>
-              Miembro 40 FC
+              Consultando MongoDB
             </span>
+
           </div>
-
-        </div>
-
-
-        <div class="contact">
-
-          <strong>
-            {{ jugador.correo }}
-          </strong>
-
-          <span>
-            {{ jugador.telefono }}
-          </span>
-
-        </div>
-        
-        <div class="date">
-          {{ jugador.fechaNacimiento }}
-        </div>
-
-        <div class="date">
-          {{ jugador.fechaIngreso }}
-        </div>
-
-
-        <div>
-
-          <span
-            class="status"
-            [class.inactive]="jugador.estado === 'Inactivo'"
-          >
-            {{ jugador.estado }}
-          </span>
-
-        </div>
-
-
-        <div class="actions">
-
-          <button
-            type="button"
-            class="edit-button"
-            (click)="editarJugador(jugador)"
-          >
-            Editar
-          </button>
-
-
-          <button
-            type="button"
-            class="status-button"
-            (click)="cambiarEstado(jugador)"
-          >
-            {{
-              jugador.estado === 'Activo'
-                ? 'Desactivar'
-                : 'Activar'
-            }}
-          </button>
 
         </div>
 
       </div>
+
+    }
+
+
+    @else {
+
+      @for (
+        jugador
+        of jugadoresFiltrados;
+        track jugador.id
+      ) {
+
+        <div class="player-row">
+
+          <!-- JUGADOR -->
+
+          <div class="player">
+
+            <div class="player-avatar">
+
+              {{
+                jugador.nombre
+                  .charAt(0)
+                  .toUpperCase()
+              }}
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                {{ jugador.nombre }}
+              </strong>
+
+              <span>
+                Miembro 40 FC
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- CONTACTO -->
+
+          <div class="contact">
+
+            <strong>
+              {{ jugador.correo }}
+            </strong>
+
+            <span>
+
+              {{
+                jugador.telefono
+                  || 'Sin teléfono'
+              }}
+
+            </span>
+
+          </div>
+
+
+          <!-- NACIMIENTO -->
+
+          <div class="date">
+
+            {{
+              jugador.fechaNacimiento
+                || 'No registrada'
+            }}
+
+          </div>
+
+
+          <!-- INGRESO -->
+
+          <div class="date">
+
+            {{
+              jugador.fechaIngreso
+                || 'No registrada'
+            }}
+
+          </div>
+
+
+          <!-- ESTADO -->
+
+          <div>
+
+            <span
+              class="status"
+              [class.inactive]="
+                jugador.estado ===
+                'INACTIVO'
+              "
+            >
+
+              {{
+                textoEstado(
+                  jugador.estado
+                )
+              }}
+
+            </span>
+
+          </div>
+
+
+          <!-- ACCIONES -->
+
+          <div class="actions">
+
+            <button
+              type="button"
+              class="edit-button"
+              (click)="
+                editarJugador(
+                  jugador
+                )
+              "
+              [disabled]="
+                cambiandoEstadoId ===
+                jugador.id
+              "
+            >
+              Editar
+            </button>
+
+
+            <button
+              type="button"
+              class="status-button"
+              (click)="
+                cambiarEstado(
+                  jugador
+                )
+              "
+              [disabled]="
+                cambiandoEstadoId ===
+                jugador.id
+              "
+            >
+
+              @if (
+                cambiandoEstadoId ===
+                jugador.id
+              ) {
+
+                Procesando...
+
+              }
+
+              @else {
+
+                {{
+                  jugador.estado ===
+                    'ACTIVO'
+                    ?
+                    'Desactivar'
+                    :
+                    'Activar'
+                }}
+
+              }
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      @empty {
+
+        <div class="player-row">
+
+          <div class="player">
+
+            <div>
+
+              <strong>
+                No se encontraron jugadores
+              </strong>
+
+              <span>
+
+                @if (busqueda) {
+
+                  No existen resultados para la búsqueda.
+
+                }
+
+                @else {
+
+                  Aún no existen jugadores registrados.
+
+                }
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
 
     }
 
@@ -212,12 +398,17 @@
               JUGADORES
             </span>
 
+
             <h3>
+
               {{
                 editandoId !== null
-                  ? 'Editar jugador'
-                  : 'Nuevo jugador'
+                  ?
+                  'Editar jugador'
+                  :
+                  'Nuevo jugador'
               }}
+
             </h3>
 
           </div>
@@ -227,6 +418,7 @@
             type="button"
             class="close-button"
             (click)="cancelarFormulario()"
+            [disabled]="guardando"
           >
             ×
           </button>
@@ -234,7 +426,18 @@
         </header>
 
 
+        @if (mensajeError) {
+
+          <div class="error-message">
+            {{ mensajeError }}
+          </div>
+
+        }
+
+
         <div class="form-grid">
+
+          <!-- NOMBRE -->
 
           <div class="form-group full">
 
@@ -242,14 +445,18 @@
               Nombre completo *
             </label>
 
+
             <input
               type="text"
               [(ngModel)]="formulario.nombre"
               placeholder="Nombre y apellido"
+              [disabled]="guardando"
             >
 
           </div>
 
+
+          <!-- CORREO -->
 
           <div class="form-group full">
 
@@ -257,56 +464,109 @@
               Correo electrónico *
             </label>
 
+
             <input
               type="email"
               [(ngModel)]="formulario.correo"
               placeholder="jugador@40fc.com"
+              [disabled]="guardando"
             >
 
           </div>
 
 
+          <!-- CONTRASEÑA SOLO AL CREAR -->
+
+          @if (
+            editandoId === null
+          ) {
+
+            <div class="form-group full">
+
+              <label>
+                Contraseña temporal *
+              </label>
+
+
+              <input
+                type="password"
+                [(ngModel)]="
+                  formulario.password
+                "
+                placeholder="Mínimo 8 caracteres"
+                autocomplete="new-password"
+                [disabled]="guardando"
+              >
+
+
+              <small>
+                El jugador utilizará esta contraseña para iniciar sesión.
+              </small>
+
+            </div>
+
+          }
+
+
+          <!-- TELÉFONO -->
+
           <div class="form-group">
 
-  <label>
-    Teléfono
-  </label>
-
-  <input
-    type="tel"
-    [(ngModel)]="formulario.telefono"
-    placeholder="0999999999"
-  >
-
-</div>
+            <label>
+              Teléfono
+            </label>
 
 
-<div class="form-group">
+            <input
+              type="tel"
+              [(ngModel)]="
+                formulario.telefono
+              "
+              placeholder="0999999999"
+              [disabled]="guardando"
+            >
 
-  <label>
-    Fecha de nacimiento
-  </label>
-
-  <input
-    type="date"
-    [(ngModel)]="formulario.fechaNacimiento"
-  >
-
-</div>
+          </div>
 
 
-<div class="form-group full">
+          <!-- NACIMIENTO -->
 
-  <label>
-    Fecha de ingreso al club
-  </label>
+          <div class="form-group">
 
-  <input
-    type="date"
-    [(ngModel)]="formulario.fechaIngreso"
-  >
+            <label>
+              Fecha de nacimiento
+            </label>
 
-</div>
+
+            <input
+              type="date"
+              [(ngModel)]="
+                formulario.fechaNacimiento
+              "
+              [disabled]="guardando"
+            >
+
+          </div>
+
+
+          <!-- FECHA DE INGRESO -->
+
+          <div class="form-group full">
+
+            <label>
+              Fecha de ingreso al club
+            </label>
+
+
+            <input
+              type="date"
+              [(ngModel)]="
+                formulario.fechaIngreso
+              "
+              [disabled]="guardando"
+            >
+
+          </div>
 
         </div>
 
@@ -317,6 +577,7 @@
             type="button"
             class="cancel-button"
             (click)="cancelarFormulario()"
+            [disabled]="guardando"
           >
             Cancelar
           </button>
@@ -326,12 +587,27 @@
             type="button"
             class="save-button"
             (click)="guardarJugador()"
+            [disabled]="guardando"
           >
-            {{
-              editandoId !== null
-                ? 'GUARDAR CAMBIOS'
-                : 'CREAR JUGADOR'
-            }}
+
+            @if (guardando) {
+
+              GUARDANDO...
+
+            }
+
+            @else {
+
+              {{
+                editandoId !== null
+                  ?
+                  'GUARDAR CAMBIOS'
+                  :
+                  'CREAR JUGADOR'
+              }}
+
+            }
+
           </button>
 
         </footer>

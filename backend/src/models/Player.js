@@ -9,50 +9,70 @@ const playerSchema =
         type:
           mongoose.Schema.Types.ObjectId,
 
-        ref: 'User',
+        ref:
+          'User',
 
-        required: true,
+        required:
+          true,
 
-        unique: true
+        unique:
+          true
       },
 
 
       telefono: {
-        type: String,
-        trim: true,
-        default: ''
+        type:
+          String,
+
+        trim:
+          true,
+
+        default:
+          ''
       },
 
 
       fechaNacimiento: {
-        type: Date,
-        default: null
+        type:
+          Date,
+
+        default:
+          null
       },
 
 
       fechaIngreso: {
-        type: Date,
-        default: Date.now
+        type:
+          Date,
+
+        required:
+          true,
+
+        default:
+          Date.now
       },
 
 
       estado: {
-        type: String,
+        type:
+          String,
 
         enum: [
           'ACTIVO',
           'INACTIVO'
         ],
 
-        default: 'ACTIVO'
+        default:
+          'ACTIVO'
       }
 
     },
-
     {
-      timestamps: true
-    }
 
+      timestamps:
+        true
+
+    }
   );
 
 
