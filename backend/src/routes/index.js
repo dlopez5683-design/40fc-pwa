@@ -11,6 +11,9 @@ const router =
 const playerRoutes =
   require('./playerRoutes');
 
+const matchRoutes =
+  require('./matchRoutes');
+
 /* =====================================================
    HEALTH
    ===================================================== */
@@ -47,6 +50,11 @@ router.use(
 router.use(
   '/jugadores',
   playerRoutes
+);
+
+router.use(
+  '/partidos',
+  matchRoutes
 );
 
 

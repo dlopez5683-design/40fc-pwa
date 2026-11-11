@@ -1,39 +1,69 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject
+} from '@angular/core';
+
+import {
+  FormsModule
+} from '@angular/forms';
+
+import {
+  HttpErrorResponse
+} from '@angular/common/http';
+
+import {
+  MatchService,
+  PartidoApi,
+  CrearPartidoDto,
+  EstadoPartido,
+  ConfirmacionPartido
+} from '../../../core/services/match.service';
+
 
 type EstadoConfirmacion =
   | 'Confirmado'
   | 'No asistirá'
   | 'Pendiente';
 
+
 type TipoMovimiento =
   | 'credito_fondo'
   | 'deuda_fondo';
 
+
 interface JugadorPartido {
-  id: number;
+  id: string;
   nombre: string;
+  correo: string;
   confirmacion: EstadoConfirmacion;
   asistio: boolean;
 }
 
+
 interface Partido {
-  id: number;
+  id: string;
   fecha: string;
   hora: string;
   cancha: string;
   costoCancha: number;
   cuotaJugador: number;
-  estado: 'Abierta' | 'Cerrada' | 'Finalizada';
+  estado:
+    | 'Abierta'
+    | 'Cerrada'
+    | 'Finalizada';
 }
 
+
 interface MovimientoPartido {
-  jugadorId: number;
+  jugadorId: string;
   jugadorNombre: string;
   tipo: TipoMovimiento;
   valorCentavos: number;
   valor: number;
 }
+
 
 interface ResumenCierre {
   asistentes: number;
@@ -45,37 +75,85 @@ interface ResumenCierre {
   totalDeudas: number;
 }
 
+
 @Component({
   selector: 'app-partidos',
-  imports: [FormsModule],
-  templateUrl: './partidos.html',
-  styleUrl: './partidos.scss'
+
+  imports: [
+    FormsModule
+  ],
+
+  templateUrl:
+    './partidos.html',
+
+  styleUrl:
+    './partidos.scss'
 })
-export class Partidos {
+export class Partidos
+  implements OnInit {
 
-  mostrarFormulario = false;
 
-  mensajeCierre = '';
+  private readonly matchService =
+    inject(MatchService);
 
-  errorCierre = '';
+
+  private readonly cdr =
+    inject(ChangeDetectorRef);
+
+
+  mostrarFormulario =
+    false;
+
+  cargandoPartidos =
+    false;
+
+  guardandoPartido =
+    false;
+
+  cambiandoEstado =
+    false;
+
+  cambiandoAsistenciaId:
+  string | null =
+  null;
+
+  mensajeApi =
+    '';
+
+  errorApi =
+    '';
+
+  mensajeCierre =
+    '';
+
+  errorCierre =
+    '';
+
 
   /*
-   * Más adelante este valor se guardará en MongoDB
-   * para que la distribución de centavos sea rotativa
+   * En 19C-3 este valor se persistirá
+   * para conservar la rotación exacta
    * entre diferentes fechas.
    */
-  indiceRotacionCentavos = 0;
+  indiceRotacionCentavos =
+    0;
 
 
-  partidoActual: Partido = {
-    id: 1,
-    fecha: '2026-08-29',
-    hora: '20:00',
-    cancha: 'Asociación de Empleados UTM',
-    costoCancha: 28,
-    cuotaJugador: 2.25,
-    estado: 'Abierta'
-  };
+  hayPartido =
+    false;
+
+
+  partidoActual:
+    Partido =
+    {
+      id: '',
+      fecha: '',
+      hora: '',
+      cancha: '',
+      costoCancha: 0,
+      cuotaJugador: 2.25,
+      estado: 'Abierta'
+    };
 
 
   formularioPartido = {
@@ -86,234 +164,348 @@ export class Partidos {
   };
 
 
-  jugadores: JugadorPartido[] = [
+  jugadores:
+    JugadorPartido[] =
+    [];
 
-    {
-      id: 1,
-      nombre: 'Irving',
-      confirmacion: 'Confirmado',
-      asistio: true
-    },
 
-    {
-      id: 2,
-      nombre: 'Eduardo',
-      confirmacion: 'Confirmado',
-      asistio: true
-    },
+  movimientosGenerados:
+    MovimientoPartido[] =
+    [];
 
-    {
-      id: 3,
-      nombre: 'Víctor Párraga',
-      confirmacion: 'No asistirá',
-      asistio: false
-    },
 
-    {
-      id: 4,
-      nombre: 'Robinson',
-      confirmacion: 'Pendiente',
-      asistio: false
+  resumenCierre:
+    ResumenCierre | null =
+    null;
+
+
+  /* =====================================================
+     INICIO
+     ===================================================== */
+
+  ngOnInit(): void {
+
+    this.cargarPartidos();
+
+  }
+
+
+  /* =====================================================
+     CARGAR PARTIDOS DESDE MONGODB
+     ===================================================== */
+
+  cargarPartidos(): void {
+
+    this.cargandoPartidos =
+      true;
+
+    this.errorApi =
+      '';
+
+
+    this.matchService
+      .listar()
+      .subscribe({
+
+        next:
+          respuesta => {
+
+            const partidoMasReciente =
+              respuesta.partidos[0];
+
+
+            if (
+              partidoMasReciente
+            ) {
+
+              this.cargarPartidoEnPantalla(
+                partidoMasReciente
+              );
+
+            } else {
+
+              this.hayPartido =
+                false;
+
+              this.jugadores =
+                [];
+
+            }
+
+
+            this.cargandoPartidos =
+              false;
+
+
+            this.cdr
+              .detectChanges();
+
+          },
+
+
+        error:
+          error => {
+
+            this.cargandoPartidos =
+              false;
+
+
+            this.errorApi =
+              this.obtenerMensajeError(
+                error,
+                'No fue posible cargar los partidos.'
+              );
+
+
+            this.cdr
+              .detectChanges();
+
+          }
+
+      });
+
+  }
+
+
+  /* =====================================================
+     CARGAR PARTIDO EN LA PANTALLA
+     ===================================================== */
+
+  private cargarPartidoEnPantalla(
+    partido:
+      PartidoApi
+  ): void {
+
+    this.hayPartido =
+      true;
+
+
+    this.partidoActual = {
+
+      id:
+        partido.id,
+
+      fecha:
+        this.formatearFecha(
+          partido.fecha
+        ),
+
+      hora:
+        partido.hora,
+
+      cancha:
+        partido.cancha,
+
+      costoCancha:
+        this.centavosADinero(
+          partido
+            .costoCanchaCentavos
+        ),
+
+      cuotaJugador:
+        this.centavosADinero(
+          partido
+            .cuotaJugadorCentavos
+        ),
+
+      estado:
+        this.mapearEstado(
+          partido.estado
+        )
+
+    };
+
+
+    this.jugadores =
+      partido.participantes.map(
+        participante => ({
+
+          id:
+            participante
+              .jugadorId
+            ??
+            '',
+
+          nombre:
+            participante.nombre
+            ||
+            'Jugador',
+
+          correo:
+            participante.correo
+            ||
+            '',
+
+          confirmacion:
+            this.mapearConfirmacion(
+              participante
+                .confirmacion
+            ),
+
+          asistio:
+            participante.asistio
+
+        })
+      );
+
+
+    /*
+     * El cierre financiero todavía es local.
+     * En 19C-3 se persistirá.
+     */
+    this.movimientosGenerados =
+      [];
+
+    this.resumenCierre =
+      null;
+
+    this.mensajeCierre =
+      '';
+
+    this.errorCierre =
+      '';
+
+  }
+
+
+  /* =====================================================
+     MAPEO DE ESTADOS
+     ===================================================== */
+
+  private mapearEstado(
+    estado:
+      EstadoPartido
+  ): Partido['estado'] {
+
+    switch (
+      estado
+    ) {
+
+      case 'CERRADA':
+
+        return 'Cerrada';
+
+
+      case 'FINALIZADA':
+
+        return 'Finalizada';
+
+
+      default:
+
+        return 'Abierta';
+
     }
 
-  ];
+  }
 
 
-  movimientosGenerados: MovimientoPartido[] = [];
+  private mapearConfirmacion(
+    confirmacion:
+      ConfirmacionPartido
+  ): EstadoConfirmacion {
 
-  resumenCierre: ResumenCierre | null = null;
+    switch (
+      confirmacion
+    ) {
+
+      case 'CONFIRMADO':
+
+        return 'Confirmado';
+
+
+      case 'NO_ASISTIRA':
+
+        return 'No asistirá';
+
+
+      default:
+
+        return 'Pendiente';
+
+    }
+
+  }
+
+
+  /* =====================================================
+     UTILIDADES
+     ===================================================== */
+
+  private formatearFecha(
+    fecha:
+      string | null
+  ): string {
+
+    if (
+      !fecha
+    ) {
+
+      return '';
+
+    }
+
+
+    return fecha.substring(
+      0,
+      10
+    );
+
+  }
+
+
+  private obtenerMensajeError(
+    error:
+      HttpErrorResponse,
+    mensajePredeterminado:
+      string
+  ): string {
+
+    return (
+      error?.error?.message
+      ??
+      mensajePredeterminado
+    );
+
+  }
 
 
   /* =====================================================
      CONFIRMACIONES
      ===================================================== */
 
-  get totalConfirmados(): number {
+  get totalConfirmados():
+    number {
 
     return this.jugadores.filter(
       jugador =>
-        jugador.confirmacion === 'Confirmado'
+        jugador.confirmacion ===
+        'Confirmado'
     ).length;
 
   }
 
 
-  get totalNoAsistiran(): number {
+  get totalNoAsistiran():
+    number {
 
     return this.jugadores.filter(
       jugador =>
-        jugador.confirmacion === 'No asistirá'
+        jugador.confirmacion ===
+        'No asistirá'
     ).length;
 
   }
 
 
-  get totalPendientes(): number {
+  get totalPendientes():
+    number {
 
     return this.jugadores.filter(
       jugador =>
-        jugador.confirmacion === 'Pendiente'
+        jugador.confirmacion ===
+        'Pendiente'
     ).length;
-
-  }
-
-
-  /* =====================================================
-     ASISTENCIA REAL
-     ===================================================== */
-
-  get asistentes(): JugadorPartido[] {
-
-    return this.jugadores.filter(
-      jugador => jugador.asistio
-    );
-
-  }
-
-
-  get noAsistentes(): JugadorPartido[] {
-
-    return this.jugadores.filter(
-      jugador => !jugador.asistio
-    );
-
-  }
-
-
-  get totalAsistentes(): number {
-
-    return this.asistentes.length;
-
-  }
-
-
-  /* =====================================================
-     CÁLCULOS FINANCIEROS
-     ===================================================== */
-
-  get recaudacion(): number {
-
-    return (
-      this.totalAsistentes *
-      this.partidoActual.cuotaJugador
-    );
-
-  }
-
-
-  get fondoGenerado(): number {
-
-    return (
-      this.recaudacion -
-      this.partidoActual.costoCancha
-    );
-
-  }
-
-
-  get aporteReferencia(): number {
-
-    if (
-      this.totalAsistentes === 0 ||
-      this.fondoGenerado <= 0
-    ) {
-      return 0;
-    }
-
-    return (
-      this.fondoGenerado /
-      this.totalAsistentes
-    );
-
-  }
-
-
-  /* =====================================================
-     CREAR PARTIDO
-     ===================================================== */
-
-  abrirNuevoPartido(): void {
-
-    this.formularioPartido = {
-      fecha: '',
-      hora: '',
-      cancha: '',
-      costoCancha: 28
-    };
-
-    this.mostrarFormulario = true;
-
-  }
-
-
-  cancelarFormulario(): void {
-
-    this.mostrarFormulario = false;
-
-  }
-
-
-  crearPartido(): void {
-
-    if (
-      !this.formularioPartido.fecha ||
-      !this.formularioPartido.hora ||
-      !this.formularioPartido.cancha.trim()
-    ) {
-      return;
-    }
-
-
-    this.partidoActual = {
-
-      id: Date.now(),
-
-      fecha:
-        this.formularioPartido.fecha,
-
-      hora:
-        this.formularioPartido.hora,
-
-      cancha:
-        this.formularioPartido.cancha,
-
-      costoCancha:
-        Number(
-          this.formularioPartido.costoCancha
-        ),
-
-      cuotaJugador: 2.25,
-
-      estado: 'Abierta'
-
-    };
-
-
-    /*
-     * Al crear una nueva convocatoria
-     * todos comienzan pendientes.
-     */
-    this.jugadores = this.jugadores.map(
-      jugador => ({
-        ...jugador,
-        confirmacion: 'Pendiente',
-        asistio: false
-      })
-    );
-
-
-    /*
-     * Limpiamos cualquier cierre anterior.
-     */
-    this.movimientosGenerados = [];
-
-    this.resumenCierre = null;
-
-    this.mensajeCierre = '';
-
-    this.errorCierre = '';
-
-    this.mostrarFormulario = false;
 
   }
 
@@ -322,70 +514,592 @@ export class Partidos {
      ASISTENCIA
      ===================================================== */
 
-  cambiarAsistencia(
-    jugador: JugadorPartido
-  ): void {
+  get asistentes():
+    JugadorPartido[] {
 
-    /*
-     * Una vez finalizado el partido
-     * ya no permitimos cambiar la asistencia.
-     */
-    if (
-      this.partidoActual.estado === 'Finalizada'
-    ) {
-      return;
-    }
+    return this.jugadores.filter(
+      jugador =>
+        jugador.asistio
+    );
 
-    jugador.asistio = !jugador.asistio;
+  }
+
+
+  get noAsistentes():
+    JugadorPartido[] {
+
+    return this.jugadores.filter(
+      jugador =>
+        !jugador.asistio
+    );
+
+  }
+
+
+  get totalAsistentes():
+    number {
+
+    return this.asistentes.length;
 
   }
 
 
   /* =====================================================
-     CONVOCATORIA
+     CÁLCULOS
      ===================================================== */
 
-  cerrarConvocatoria(): void {
+  get recaudacion():
+    number {
 
-    if (
-      this.partidoActual.estado === 'Finalizada'
-    ) {
-      return;
-    }
-
-    this.partidoActual.estado = 'Cerrada';
+    return (
+      this.totalAsistentes
+      *
+      this.partidoActual
+        .cuotaJugador
+    );
 
   }
 
 
-  reabrirConvocatoria(): void {
+  get fondoGenerado():
+    number {
+
+    return (
+      this.recaudacion
+      -
+      this.partidoActual
+        .costoCancha
+    );
+
+  }
+
+
+  get aporteReferencia():
+    number {
 
     if (
-      this.partidoActual.estado === 'Finalizada'
+      this.totalAsistentes ===
+        0
+      ||
+      this.fondoGenerado <=
+        0
     ) {
-      return;
+
+      return 0;
+
     }
 
-    this.partidoActual.estado = 'Abierta';
+
+    return (
+      this.fondoGenerado
+      /
+      this.totalAsistentes
+    );
 
   }
 
 
   /* =====================================================
-     UTILIDADES DE CENTAVOS
+     NUEVO PARTIDO
+     ===================================================== */
+
+  abrirNuevoPartido():
+    void {
+
+    this.formularioPartido = {
+      fecha: '',
+      hora: '',
+      cancha: '',
+      costoCancha: 28
+    };
+
+
+    this.errorApi =
+      '';
+
+    this.mensajeApi =
+      '';
+
+    this.mostrarFormulario =
+      true;
+
+  }
+
+
+  cancelarFormulario():
+    void {
+
+    if (
+      this.guardandoPartido
+    ) {
+
+      return;
+
+    }
+
+
+    this.mostrarFormulario =
+      false;
+
+  }
+
+
+  crearPartido():
+    void {
+
+    this.errorApi =
+      '';
+
+    this.mensajeApi =
+      '';
+
+
+    if (
+      !this.formularioPartido.fecha
+      ||
+      !this.formularioPartido.hora
+      ||
+      !this.formularioPartido
+        .cancha
+        .trim()
+    ) {
+
+      this.errorApi =
+        'Fecha, hora y cancha son obligatorios.';
+
+      return;
+
+    }
+
+
+    const costoCancha =
+      Number(
+        this.formularioPartido
+          .costoCancha
+      );
+
+
+    if (
+      !Number.isFinite(
+        costoCancha
+      )
+      ||
+      costoCancha < 0
+    ) {
+
+      this.errorApi =
+        'El costo de cancha no es válido.';
+
+      return;
+
+    }
+
+
+    const datos:
+      CrearPartidoDto =
+      {
+
+        fecha:
+          this.formularioPartido
+            .fecha,
+
+        hora:
+          this.formularioPartido
+            .hora,
+
+        cancha:
+          this.formularioPartido
+            .cancha
+            .trim(),
+
+        costoCanchaCentavos:
+          this.dineroACentavos(
+            costoCancha
+          ),
+
+        cuotaJugadorCentavos:
+          225
+
+      };
+
+
+    this.guardandoPartido =
+      true;
+
+
+    this.matchService
+      .crear(
+        datos
+      )
+      .subscribe({
+
+        next:
+          respuesta => {
+
+            this.guardandoPartido =
+              false;
+
+            this.mostrarFormulario =
+              false;
+
+
+            this.mensajeApi =
+              respuesta.message
+              ??
+              'Partido creado correctamente.';
+
+
+            this.cargarPartidoEnPantalla(
+              respuesta.partido
+            );
+
+
+            this.cdr
+              .detectChanges();
+
+          },
+
+
+        error:
+          error => {
+
+            this.guardandoPartido =
+              false;
+
+
+            this.errorApi =
+              this.obtenerMensajeError(
+                error,
+                'No fue posible crear el partido.'
+              );
+
+
+            this.cdr
+              .detectChanges();
+
+          }
+
+      });
+
+  }
+
+
+  /* =====================================================
+     ASISTENCIA LOCAL
+     ===================================================== */
+
+  /* =====================================================
+   ASISTENCIA REAL EN MONGODB
+   ===================================================== */
+
+cambiarAsistencia(
+  jugador:
+    JugadorPartido
+): void {
+
+  if (
+    !this.partidoActual.id
+    ||
+    !jugador.id
+    ||
+    this.partidoActual
+      .estado ===
+      'Finalizada'
+    ||
+    this.cambiandoAsistenciaId
+  ) {
+
+    return;
+
+  }
+
+
+  this.errorApi =
+    '';
+
+  this.mensajeApi =
+    '';
+
+
+  const nuevaAsistencia =
+    !jugador.asistio;
+
+
+  this.cambiandoAsistenciaId =
+    jugador.id;
+
+
+  this.matchService
+    .actualizarAsistencia(
+
+      this.partidoActual.id,
+
+      jugador.id,
+
+      nuevaAsistencia
+
+    )
+    .subscribe({
+
+      next:
+        respuesta => {
+
+          this.cambiandoAsistenciaId =
+            null;
+
+
+          const participanteActualizado =
+            respuesta
+              .partido
+              .participantes
+              .find(
+                participante =>
+                  participante
+                    .jugadorId ===
+                  jugador.id
+              );
+
+
+          if (
+            participanteActualizado
+          ) {
+
+            jugador.asistio =
+              participanteActualizado
+                .asistio;
+
+          }
+
+
+          this.mensajeApi =
+            respuesta.message
+            ??
+            'Asistencia actualizada correctamente.';
+
+
+          this.cdr
+            .detectChanges();
+
+        },
+
+
+      error:
+        error => {
+
+          this.cambiandoAsistenciaId =
+            null;
+
+
+          this.errorApi =
+            this.obtenerMensajeError(
+              error,
+              'No fue posible actualizar la asistencia.'
+            );
+
+
+          this.cdr
+            .detectChanges();
+
+        }
+
+    });
+
+}
+
+
+  /* =====================================================
+     CERRAR CONVOCATORIA
+     ===================================================== */
+
+  cerrarConvocatoria():
+    void {
+
+    if (
+      !this.partidoActual.id
+      ||
+      this.partidoActual
+        .estado ===
+      'Finalizada'
+      ||
+      this.cambiandoEstado
+    ) {
+
+      return;
+
+    }
+
+
+    this.cambiandoEstado =
+      true;
+
+    this.errorApi =
+      '';
+
+    this.mensajeApi =
+      '';
+
+
+    this.matchService
+      .cambiarEstado(
+        this.partidoActual.id,
+        'CERRADA'
+      )
+      .subscribe({
+
+        next:
+          respuesta => {
+
+            this.cambiandoEstado =
+              false;
+
+
+            this.partidoActual
+              .estado =
+              'Cerrada';
+
+
+            this.mensajeApi =
+              respuesta.message
+              ??
+              'Convocatoria cerrada correctamente.';
+
+
+            this.cdr
+              .detectChanges();
+
+          },
+
+
+        error:
+          error => {
+
+            this.cambiandoEstado =
+              false;
+
+
+            this.errorApi =
+              this.obtenerMensajeError(
+                error,
+                'No fue posible cerrar la convocatoria.'
+              );
+
+
+            this.cdr
+              .detectChanges();
+
+          }
+
+      });
+
+  }
+
+
+  /* =====================================================
+     REABRIR CONVOCATORIA
+     ===================================================== */
+
+  reabrirConvocatoria():
+    void {
+
+    if (
+      !this.partidoActual.id
+      ||
+      this.partidoActual
+        .estado ===
+      'Finalizada'
+      ||
+      this.cambiandoEstado
+    ) {
+
+      return;
+
+    }
+
+
+    this.cambiandoEstado =
+      true;
+
+    this.errorApi =
+      '';
+
+    this.mensajeApi =
+      '';
+
+
+    this.matchService
+      .cambiarEstado(
+        this.partidoActual.id,
+        'ABIERTA'
+      )
+      .subscribe({
+
+        next:
+          respuesta => {
+
+            this.cambiandoEstado =
+              false;
+
+
+            this.partidoActual
+              .estado =
+              'Abierta';
+
+
+            this.mensajeApi =
+              respuesta.message
+              ??
+              'Convocatoria reabierta correctamente.';
+
+
+            this.cdr
+              .detectChanges();
+
+          },
+
+
+        error:
+          error => {
+
+            this.cambiandoEstado =
+              false;
+
+
+            this.errorApi =
+              this.obtenerMensajeError(
+                error,
+                'No fue posible reabrir la convocatoria.'
+              );
+
+
+            this.cdr
+              .detectChanges();
+
+          }
+
+      });
+
+  }
+
+
+  /* =====================================================
+     CENTAVOS
      ===================================================== */
 
   private dineroACentavos(
-    valor: number
+    valor:
+      number
   ): number {
 
-    return Math.round(valor * 100);
+    return Math.round(
+      valor * 100
+    );
 
   }
 
 
   private centavosADinero(
-    centavos: number
+    centavos:
+      number
   ): number {
 
     return centavos / 100;
@@ -393,51 +1107,51 @@ export class Partidos {
   }
 
 
-  /*
-   * Distribuye una cantidad de centavos de forma exacta.
-   *
-   * Ejemplo:
-   *
-   * 1925 centavos / 21 jugadores
-   *
-   * Base: 91 centavos
-   * Resto: 14 centavos
-   *
-   * 14 jugadores reciben 92
-   * 7 reciben 91
-   */
   private distribuirCentavos(
-    totalCentavos: number,
-    cantidadPersonas: number,
-    desplazamiento: number
+    totalCentavos:
+      number,
+    cantidadPersonas:
+      number,
+    desplazamiento:
+      number
   ): number[] {
 
     if (
-      cantidadPersonas <= 0 ||
-      totalCentavos <= 0
+      cantidadPersonas <=
+        0
+      ||
+      totalCentavos <=
+        0
     ) {
+
       return [];
+
     }
 
 
-    const base = Math.floor(
-      totalCentavos / cantidadPersonas
-    );
+    const base =
+      Math.floor(
+        totalCentavos
+        /
+        cantidadPersonas
+      );
 
 
     const resto =
-      totalCentavos % cantidadPersonas;
+      totalCentavos
+      %
+      cantidadPersonas;
 
 
     const resultado =
-      new Array(cantidadPersonas)
-        .fill(base);
+      new Array(
+        cantidadPersonas
+      )
+        .fill(
+          base
+        );
 
 
-    /*
-     * Los centavos sobrantes se asignan
-     * comenzando desde una posición rotativa.
-     */
     for (
       let i = 0;
       i < resto;
@@ -446,11 +1160,17 @@ export class Partidos {
 
       const posicion =
         (
-          desplazamiento + i
+          desplazamiento
+          +
+          i
         )
-        % cantidadPersonas;
+        %
+        cantidadPersonas;
 
-      resultado[posicion] += 1;
+
+      resultado[
+        posicion
+      ] += 1;
 
     }
 
@@ -461,21 +1181,23 @@ export class Partidos {
 
 
   /* =====================================================
-     CIERRE FINANCIERO
+     CIERRE FINANCIERO LOCAL
      ===================================================== */
 
-  cerrarPartido(): void {
+  cerrarPartido():
+    void {
 
-    this.errorCierre = '';
+    this.errorCierre =
+      '';
 
-    this.mensajeCierre = '';
+    this.mensajeCierre =
+      '';
 
 
-    /*
-     * Evitar cerrar dos veces.
-     */
     if (
-      this.partidoActual.estado === 'Finalizada'
+      this.partidoActual
+        .estado ===
+      'Finalizada'
     ) {
 
       this.errorCierre =
@@ -486,11 +1208,9 @@ export class Partidos {
     }
 
 
-    /*
-     * Debe existir al menos un asistente.
-     */
     if (
-      this.totalAsistentes === 0
+      this.totalAsistentes ===
+      0
     ) {
 
       this.errorCierre =
@@ -501,15 +1221,9 @@ export class Partidos {
     }
 
 
-    /*
-     * La recaudación debe cubrir la cancha.
-     *
-     * Si existe déficit, primero debe corregirse
-     * la asistencia, el costo o la situación
-     * administrativa correspondiente.
-     */
     if (
-      this.fondoGenerado < 0
+      this.fondoGenerado <
+      0
     ) {
 
       this.errorCierre =
@@ -526,9 +1240,6 @@ export class Partidos {
       );
 
 
-    /*
-     * Distribución exacta entre asistentes.
-     */
     const creditosCentavos =
       this.distribuirCentavos(
         fondoCentavos,
@@ -537,22 +1248,16 @@ export class Partidos {
       );
 
 
-    /*
-     * Para las personas que no asistieron,
-     * utilizamos el mismo valor promedio
-     * de aporte generado por esta fecha.
-     *
-     * Calculamos la obligación total teórica
-     * de los no asistentes en centavos.
-     */
     const aportePromedioExacto =
-      fondoCentavos /
+      fondoCentavos
+      /
       this.asistentes.length;
 
 
     const deudaTotalCentavos =
       Math.round(
-        aportePromedioExacto *
+        aportePromedioExacto
+        *
         this.noAsistentes.length
       );
 
@@ -565,17 +1270,22 @@ export class Partidos {
       );
 
 
-    const movimientos: MovimientoPartido[] = [];
+    const movimientos:
+      MovimientoPartido[] =
+      [];
 
 
-    /*
-     * Créditos de los asistentes.
-     */
     this.asistentes.forEach(
-      (jugador, index) => {
+      (
+        jugador,
+        index
+      ) => {
 
         const centavos =
-          creditosCentavos[index];
+          creditosCentavos[
+            index
+          ];
+
 
         movimientos.push({
 
@@ -602,14 +1312,17 @@ export class Partidos {
     );
 
 
-    /*
-     * Deudas de quienes no asistieron.
-     */
     this.noAsistentes.forEach(
-      (jugador, index) => {
+      (
+        jugador,
+        index
+      ) => {
 
         const centavos =
-          deudasCentavos[index];
+          deudasCentavos[
+            index
+          ];
+
 
         movimientos.push({
 
@@ -642,16 +1355,26 @@ export class Partidos {
 
     const totalCreditosCentavos =
       creditosCentavos.reduce(
-        (acumulado, valor) =>
-          acumulado + valor,
+        (
+          acumulado,
+          valor
+        ) =>
+          acumulado
+          +
+          valor,
         0
       );
 
 
     const totalDeudasCentavos =
       deudasCentavos.reduce(
-        (acumulado, valor) =>
-          acumulado + valor,
+        (
+          acumulado,
+          valor
+        ) =>
+          acumulado
+          +
+          valor,
         0
       );
 
@@ -668,7 +1391,8 @@ export class Partidos {
         this.recaudacion,
 
       costoCancha:
-        this.partidoActual.costoCancha,
+        this.partidoActual
+          .costoCancha,
 
       fondoGenerado:
         this.fondoGenerado,
@@ -686,33 +1410,33 @@ export class Partidos {
     };
 
 
-    /*
-     * Partido finalizado.
-     */
     this.partidoActual.estado =
       'Finalizada';
 
 
-    /*
-     * Avanzamos la rotación para que
-     * el próximo centavo sobrante no
-     * empiece siempre por la misma persona.
-     */
     if (
-      this.jugadores.length > 0
+      this.jugadores.length >
+      0
     ) {
 
       this.indiceRotacionCentavos =
         (
-          this.indiceRotacionCentavos + 1
+          this.indiceRotacionCentavos
+          +
+          1
         )
-        % this.jugadores.length;
+        %
+        this.jugadores.length;
 
     }
 
 
     this.mensajeCierre =
-      'Partido cerrado correctamente. Los movimientos del fondo común fueron generados.';
+      'Partido cerrado localmente. En 19C-3 estos movimientos se guardarán definitivamente en MongoDB.';
+
+
+    this.cdr
+      .detectChanges();
 
   }
 

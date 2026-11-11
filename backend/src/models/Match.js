@@ -1,4 +1,52 @@
-const mongoose = require('mongoose');
+const mongoose =
+  require('mongoose');
+
+
+const participanteSchema =
+  new mongoose.Schema(
+    {
+
+      jugador: {
+        type:
+          mongoose.Schema.Types.ObjectId,
+
+        ref:
+          'Player',
+
+        required:
+          true
+      },
+
+
+      confirmacion: {
+        type:
+          String,
+
+        enum: [
+          'PENDIENTE',
+          'CONFIRMADO',
+          'NO_ASISTIRA'
+        ],
+
+        default:
+          'PENDIENTE'
+      },
+
+
+      asistio: {
+        type:
+          Boolean,
+
+        default:
+          false
+      }
+
+    },
+    {
+      _id:
+        false
+    }
+  );
 
 
 const matchSchema =
@@ -6,40 +54,65 @@ const matchSchema =
     {
 
       fecha: {
-        type: Date,
-        required: true
+        type:
+          Date,
+
+        required:
+          true
       },
 
 
       hora: {
-        type: String,
-        required: true
+        type:
+          String,
+
+        required:
+          true,
+
+        trim:
+          true
       },
 
 
       cancha: {
-        type: String,
-        required: true,
-        trim: true
+        type:
+          String,
+
+        required:
+          true,
+
+        trim:
+          true
       },
 
 
       costoCanchaCentavos: {
-        type: Number,
-        required: true,
-        min: 0
+        type:
+          Number,
+
+        required:
+          true,
+
+        min:
+          0
       },
 
 
       cuotaJugadorCentavos: {
-        type: Number,
-        default: 225
+        type:
+          Number,
+
+        default:
+          225,
+
+        min:
+          0
       },
 
 
       estado: {
-
-        type: String,
+        type:
+          String,
 
         enum: [
           'ABIERTA',
@@ -47,58 +120,39 @@ const matchSchema =
           'FINALIZADA'
         ],
 
-        default: 'ABIERTA'
-
+        default:
+          'ABIERTA'
       },
 
 
-      participantes: [
+      participantes: {
+        type: [
+          participanteSchema
+        ],
 
-        {
-
-          jugador: {
-
-            type:
-              mongoose.Schema.Types.ObjectId,
-
-            ref: 'Player',
-
-            required: true
-
-          },
+        default:
+          []
+      },
 
 
-          confirmacion: {
+      creadoPor: {
+        type:
+          mongoose.Schema.Types.ObjectId,
 
-            type: String,
+        ref:
+          'User',
 
-            enum: [
-              'PENDIENTE',
-              'CONFIRMADO',
-              'NO_ASISTIRA'
-            ],
-
-            default: 'PENDIENTE'
-
-          },
-
-
-          asistio: {
-            type: Boolean,
-            default: false
-          }
-
-        }
-
-      ]
-
+        required:
+          true
+      }
 
     },
-
     {
-      timestamps: true
-    }
 
+      timestamps:
+        true
+
+    }
   );
 
 

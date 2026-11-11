@@ -3,27 +3,66 @@
   margin: 0 auto;
 }
 
+
 .eyebrow {
   color: #e5232d;
+
   font-size: 0.66rem;
   font-weight: 800;
+
   letter-spacing: 0.16em;
 }
+
 
 .page-header {
   margin-bottom: 28px;
 }
 
+
 .page-header h2 {
   margin: 7px 0 5px;
+
   color: #111318;
+
   font-size: 2rem;
 }
 
+
 .page-header p {
   margin: 0;
+
   color: #7b838d;
+
   font-size: 0.9rem;
+}
+
+
+/* ========================
+   MENSAJES
+   ======================== */
+
+.message {
+  margin-bottom: 18px;
+
+  padding: 13px 16px;
+
+  border-radius: 11px;
+
+  font-size: 0.75rem;
+}
+
+
+.message.success {
+  background: #eaf8f1;
+
+  color: #258a60;
+}
+
+
+.message.error {
+  background: #fff0f0;
+
+  color: #cf4141;
 }
 
 
@@ -35,21 +74,48 @@
   padding: 28px;
 
   border: 1px solid #e7e9ec;
+
   border-radius: 22px;
 
   background: white;
 }
 
+
+.loading-card h3,
+.empty-card h3 {
+  margin: 8px 0 6px;
+
+  color: #181c21;
+}
+
+
+.loading-card p,
+.empty-card p {
+  margin: 0;
+
+  color: #7b838d;
+
+  font-size: 0.78rem;
+}
+
+
 .match-top {
   display: flex;
+
   justify-content: space-between;
+
   align-items: flex-start;
+
+  gap: 20px;
 }
+
 
 .match-top h3 {
   margin: 6px 0 0;
+
   color: #181c21;
 }
+
 
 .status {
   padding: 7px 12px;
@@ -57,19 +123,25 @@
   border-radius: 20px;
 
   background: #fff4e8;
+
   color: #b96b22;
 
   font-size: 0.68rem;
+
   font-weight: 700;
 }
 
+
 .status.confirmed {
   background: #eaf8f1;
+
   color: #258a60;
 }
 
+
 .status.declined {
   background: #fff0f0;
+
   color: #cf4141;
 }
 
@@ -80,38 +152,55 @@
 
 .match-main {
   margin-top: 30px;
+
   padding: 25px 0;
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr;
+
+  grid-template-columns:
+    1fr
+    1fr
+    1.5fr;
 
   align-items: center;
 
-  border-top: 1px solid #edf0f2;
-  border-bottom: 1px solid #edf0f2;
+  border-top:
+    1px solid #edf0f2;
+
+  border-bottom:
+    1px solid #edf0f2;
 }
+
 
 .club {
   display: flex;
+
   align-items: center;
+
   gap: 13px;
 }
 
+
 .club img {
   width: 65px;
+
   height: 65px;
 
   object-fit: contain;
 }
 
+
 .club strong {
   color: #161a1f;
+
   font-size: 1.3rem;
 }
+
 
 .match-date {
   text-align: center;
 }
+
 
 .match-date span {
   display: block;
@@ -119,8 +208,10 @@
   color: #939ba4;
 
   font-size: 0.65rem;
+
   font-weight: 700;
 }
+
 
 .match-date strong {
   display: block;
@@ -132,6 +223,7 @@
   font-size: 1.6rem;
 }
 
+
 .match-date small {
   display: block;
 
@@ -140,21 +232,26 @@
   color: #e5232d;
 
   font-size: 0.8rem;
+
   font-weight: 700;
 }
 
+
 .location {
   display: flex;
+
   flex-direction: column;
 
   gap: 5px;
 }
+
 
 .location span {
   color: #939ba4;
 
   font-size: 0.68rem;
 }
+
 
 .location strong {
   color: #282d33;
@@ -164,30 +261,39 @@
 
 
 /* ========================
-   DATOS FINANCIEROS
+   DATOS
    ======================== */
 
 .match-detail {
   padding: 22px 0;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
 
   gap: 15px;
 }
 
+
 .match-detail div {
   display: flex;
+
   flex-direction: column;
 
   gap: 5px;
 }
+
 
 .match-detail span {
   color: #979ea6;
 
   font-size: 0.67rem;
 }
+
 
 .match-detail strong {
   color: #22272d;
@@ -200,11 +306,14 @@
    CONFIRMACIÓN
    ======================== */
 
-.confirmation-box {
+.confirmation-box,
+.closed-box {
   padding: 20px;
 
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
 
   gap: 20px;
@@ -214,22 +323,38 @@
   background: #f7f8fa;
 }
 
-.confirmation-box > div:first-child {
+
+.confirmation-box >
+div:first-child,
+.closed-box {
   display: flex;
+
   flex-direction: column;
 
   gap: 5px;
 }
 
-.confirmation-box strong {
+
+.confirmation-box strong,
+.closed-box strong {
   color: #252a30;
 }
 
-.confirmation-box span {
+
+.confirmation-box span,
+.closed-box span {
   color: #8d949c;
 
   font-size: 0.73rem;
 }
+
+
+.closed-box {
+  align-items: flex-start;
+
+  background: #f1f2f4;
+}
+
 
 .confirmation-buttons {
   display: flex;
@@ -237,39 +362,47 @@
   gap: 10px;
 }
 
+
 .confirmation-buttons button {
   padding: 12px 18px;
 
   border-radius: 10px;
 
   font-size: 0.75rem;
+
   font-weight: 700;
 
   cursor: pointer;
 }
 
+
 .yes-button {
-  border: 1px solid #e5232d;
+  border:
+    1px solid #e5232d;
 
   background: white;
 
   color: #e5232d;
 }
 
+
 .yes-button.selected,
-.yes-button:hover {
+.yes-button:hover:not(:disabled) {
   background: #e5232d;
 
   color: white;
 }
 
+
 .no-button {
-  border: 1px solid #dfe2e5;
+  border:
+    1px solid #dfe2e5;
 
   background: white;
 
   color: #636a72;
 }
+
 
 .no-button.selected {
   border-color: #cf4141;
@@ -280,19 +413,29 @@
 }
 
 
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
 /* ========================
    HISTORIAL
    ======================== */
 
 .history-card {
   margin-top: 22px;
+
   padding: 26px;
 
   border: 1px solid #e7e9ec;
+
   border-radius: 20px;
 
   background: white;
 }
+
 
 .history-title h3 {
   margin: 6px 0 18px;
@@ -300,32 +443,43 @@
   color: #181c21;
 }
 
+
 .match-row {
   padding: 15px 0;
 
   display: grid;
 
   grid-template-columns:
-    60px 1fr 110px 80px;
+    60px
+    1fr
+    150px
+    90px;
 
   gap: 15px;
 
   align-items: center;
 
-  border-bottom: 1px solid #eef0f2;
+  border-bottom:
+    1px solid #eef0f2;
 }
+
 
 .match-row:last-child {
   border-bottom: 0;
 }
 
+
 .date-box {
   width: 48px;
+
   height: 52px;
 
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
+
   align-items: center;
 
   border-radius: 10px;
@@ -335,23 +489,29 @@
   color: white;
 }
 
+
 .date-box strong {
   font-size: 1rem;
 }
+
 
 .date-box span {
   color: #74c7ee;
 
   font-size: 0.56rem;
+
   font-weight: 700;
 }
 
+
 .past-info {
   display: flex;
+
   flex-direction: column;
 
   gap: 4px;
 }
+
 
 .past-info strong {
   color: #30353b;
@@ -359,11 +519,13 @@
   font-size: 0.8rem;
 }
 
+
 .past-info span {
   color: #979ea6;
 
   font-size: 0.68rem;
 }
+
 
 .past-status {
   width: fit-content;
@@ -373,8 +535,10 @@
   border-radius: 20px;
 
   font-size: 0.63rem;
+
   font-weight: 700;
 }
+
 
 .attended {
   background: #eaf8f1;
@@ -382,22 +546,31 @@
   color: #258a60;
 }
 
+
 .absent {
   background: #fff0f0;
 
   color: #c93d3d;
 }
 
-.fund-value {
-  color: #258a60;
+
+.pending-value {
+  color: #929aa3;
 
   text-align: right;
+
+  font-size: 0.68rem;
 }
 
-.debt-value {
-  color: #d54242;
 
-  text-align: right;
+.empty-history {
+  padding: 25px 0;
+
+  color: #929aa3;
+
+  font-size: 0.78rem;
+
+  text-align: center;
 }
 
 
@@ -405,24 +578,36 @@
    RESPONSIVE
    ======================== */
 
-@media (max-width: 700px) {
+@media (
+  max-width: 700px
+) {
 
   .next-match {
     padding: 20px 17px;
   }
 
+
   .match-main {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr;
+
     gap: 22px;
   }
+
 
   .match-date {
     text-align: left;
   }
 
+
   .match-detail {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
   }
+
 
   .confirmation-box {
     flex-direction: column;
@@ -430,24 +615,30 @@
     align-items: stretch;
   }
 
+
   .confirmation-buttons {
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      1fr
+      1fr;
   }
+
 
   .match-row {
-    grid-template-columns: 55px 1fr;
+    grid-template-columns:
+      55px
+      1fr;
   }
 
+
   .past-status,
-  .fund-value,
-  .debt-value {
+  .pending-value {
     grid-column: 2;
   }
 
-  .fund-value,
-  .debt-value {
+
+  .pending-value {
     text-align: left;
   }
 
